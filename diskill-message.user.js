@@ -1098,10 +1098,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e confi
         log.verb(`Tempo estimado restante: ${msToHMS(this.stats.etr)}`);
 
         if (this.state._messagesToDelete.length > 0) {
-          if (await this.confirm() === false) {
-            this.state.running = false;
-            break;
-          }
+          // confirmação desativada: segue direto pro delete
           await this.deleteMessagesFromList();
         } else if (this.state._skippedMessages.length > 0) {
           const oldOffset = this.state.offset;
@@ -1140,28 +1137,9 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e confi
     }
 
     async confirm() {
-      if (!this.options.askForConfirmation) return true;
-
-      log.verb('Aguardando sua confirmação...');
-      const preview = this.state._messagesToDelete
-        .slice(0, 12)
-        .map(m => `${m.author.username}#${m.author.discriminator}: ${m.attachments.length ? '[ANEXOS]' : m.content}`)
-        .join('\n');
-
-      const answer = await ask(
-        `Deseja apagar ~${this.state.grandTotal} mensagens? (Estimativa: ${msToHMS(this.stats.etr)})` +
-        '\n(O número real pode ser menor se você estiver usando filtros)' +
-        '\n\n---- Prévia (até 12) ----\n' + preview
-      );
-
-      if (!answer) {
-        log.error('Cancelado por você!');
-        return false;
-      } else {
-        log.verb('OK');
-        this.options.askForConfirmation = false;
-        return true;
-      }
+      // Confirmação/preview desativados: não abre mais window.confirm
+      this.options.askForConfirmation = false;
+      return true;
     }
 
     async search() {
