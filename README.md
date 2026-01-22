@@ -1,50 +1,78 @@
 # Diskill Message
 
-Userscript para **apagar mensagens em massa no Discord**, com foco em **apagar somente as suas mensagens** (DMs e canais).
+Apaga **SOMENTE suas mensagens** em um canal ou DM no Discord (exclusão em massa) via **Tampermonkey**.
 
-> ⚠️ Use com cuidado. Apagar mensagens é uma ação irreversível.
+> ⚠️ Use com cuidado: exclusões são permanentes.
 
-## Recursos
-- UI “premium” (clara) dentro do Discord
-- Botão fixo (ícone de lixeira) na barra do chat (com fallback)
-- Auto-preenchimento de IDs (Autor/Servidor/Canal)
-- Filtros: texto, link, arquivo, fixadas (opcional)
-- Intervalos: por mensagem (min/max) e por data
-- Proteções:
-  - validação do token (evita 401)
-  - evita tentar apagar mensagens de outros (reduz 404/403)
+---
 
-## Instalação (Tampermonkey)
-1. Instale a extensão **Tampermonkey**
-2. Abra o arquivo do script e clique em **Install**
-3. Alternativa: use o `@downloadURL` (raw do GitHub) para instalar pelo link do arquivo
+## ✅ Instalação (1 clique)
 
-## Como usar
-1. Abra um canal/DM no Discord (web)
-2. Clique no ícone de lixeira do **Diskill Message**
-3. Clique em **eu** (Author ID), **atual** (Servidor/Canal)
-4. Clique em **preencher** (token)
-5. Ajuste filtros/intervalos se quiser
-6. Clique em **▶︎ Apagar**
+### 1) Instale o Tampermonkey
+- Chrome / Edge / Brave: https://www.tampermonkey.net/
+- Firefox: https://www.tampermonkey.net/
 
-## Problemas comuns
-### Botão não aparece
-- Troque de canal/DM e recarregue a página
-- O Discord muda o DOM com frequência; o script tem fallback no canto superior direito
+### 2) Instale / Atualize o script
+➡️ **Clique para instalar/atualizar:**
+- **RAW (Tampermonkey):** https://raw.githubusercontent.com/turkosx/Diskillrd-Message/main/diskill-message.user.js
 
-### Erro 401 (Unauthorized)
-- Token inválido ou preenchido por autofill do navegador
-- Desative senha salva do Discord / password manager para esse site
+---
 
-### Erro 429 (Rate limit)
-- Aumente “Atraso da busca” e “Atraso da exclusão” no painel Avançado
+## 🌐 Página de instalação (recomendado)
 
-### Erro 404/403 ao apagar
-- Normalmente ocorre ao tentar apagar mensagem que não é sua (ou sem permissão)
-- O script já aplica “failsafe” para ignorar mensagens que não sejam do authorId
+Você pode usar o `index.html` com GitHub Pages para deixar tudo mais fácil pro pessoal.
 
-## Créditos
-Inspirado no projeto **Undiscord** (victornpb) e adaptado/repaginado para **Diskill Message**.
+- Repo: https://github.com/turkosx/Diskillrd-Message
 
-## Licença
-MIT — veja o arquivo [LICENSE](./LICENSE).
+**Ativar o Pages:**
+1. Abra **Settings → Pages**
+2. Em **Build and deployment**, selecione:
+   - **Source:** Deploy from a branch
+   - **Branch:** `main`
+   - **Folder:** `/ (root)`
+3. Salve. O GitHub vai gerar um link tipo `https://turkosx.github.io/Diskillrd-Message/`
+
+---
+
+## 🧠 Como usar
+
+1. Abra o Discord no navegador e entre no **canal/DM**.
+2. Clique no ícone (lixeira) no topo e abra o painel do **Diskill Message**.
+3. Preencha os campos ou use os botões:
+   - **“me”** para pegar seu Author ID
+   - **“current”** para pegar Server/Channel ID
+4. Clique em **Apagar** e acompanhe o log.
+5. Se bater rate limit, aumente os delays em **Configurações avançadas**.
+
+---
+
+## 🔎 Filtros disponíveis
+
+- Texto contendo
+- `has: link`
+- `has: file`
+- Incluir fixadas (pinned)
+- Regex (pattern)
+- Intervalo por mensagem (min/max)
+- Intervalo por data (min/max)
+
+---
+
+## ⚠️ Notas importantes
+
+- O script tenta apagar **apenas mensagens do seu usuário**.
+- O Discord muda a interface/API com frequência — se algo quebrar, abra uma Issue.
+- Alguns erros podem acontecer em mensagens específicas (ex.: threads arquivadas, permissões, etc.).
+
+---
+
+## 🛠 Suporte / Bugs
+
+Abra uma issue:
+- https://github.com/turkosx/Diskillrd-Message/issues
+
+---
+
+## 📜 Licença
+
+MIT — veja em `LICENSE`.

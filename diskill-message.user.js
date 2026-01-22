@@ -1,4 +1,3 @@
-// ======================= PARTE 1/3 =======================
 // ==UserScript==
 // @name            Diskill Message - Apagar mensagens (DM/Canal) em massa
 // @description     Apaga SOMENTE suas mensagens em um canal ou DM (exclusão em massa)
@@ -17,6 +16,7 @@
 // @namespace       https://github.com/turkosx/Diskillrd-Message
 // @icon            https://raw.githubusercontent.com/turkosx/Diskillrd-Message/main/images/lixeira.png
 // @downloadURL     https://raw.githubusercontent.com/turkosx/Diskillrd-Message/main/diskill-message.user.js
+// @updateURL       https://raw.githubusercontent.com/turkosx/Diskillrd-Message/main/diskill-message.user.js
 // @grant           none
 // ==/UserScript==
 
@@ -885,7 +885,6 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e confi
     document.head.appendChild(style);
     return style;
   }
-// ======================= PARTE 2/3 =======================
 
   /**
    * Core: apagar mensagens do Discord (somente do authorId)
@@ -1620,7 +1619,6 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
 
   const diskillCore = new DiskillCore();
   messagePicker.init();
-// ======================= PARTE 3/3 =======================
 
   const ui = {
     window: null,

@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Diskill Message — Instalar no Tampermonkey</title>
+  <meta name="description" content="Apaga SOMENTE suas mensagens em um canal ou DM no Discord (exclusão em massa)." />
+
+  <!-- Open Graph (preview ao compartilhar) -->
+  <meta property="og:title" content="Diskill Message — Tampermonkey" />
+  <meta property="og:description" content="Apaga SOMENTE suas mensagens em um canal ou DM no Discord (exclusão em massa)." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/turkosx/Diskillrd-Message/main/images/lixeira.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#0f1b33;
+      --card2: rgba(255,255,255,.05);
+      --text:#eaf0ff;
+      --muted:#a9b6d3;
+      --border:rgba(255,255,255,.12);
+      --blue:#2f7bff;
+      --blue2:#0b5cff;
+      --shadow: 0 18px 45px rgba(0,0,0,.45);
+      --shadow2: 0 10px 28px rgba(0,0,0,.35);
+      --radius:18px;
+      --radius2:14px;
+      --focus: 0 0 0 4px rgba(47,123,255,.28);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background:
+        radial-gradient(1200px 800px at 20% 0%, #132a57 0%, transparent 55%),
+        radial-gradient(900px 600px at 100% 20%, #1a2b5b 0%, transparent 55%),
+        var(--bg);
+      color:var(--text);
+    }
+
+    a{color:inherit}
+    .wrap{max-width:1040px;margin:0 auto;padding:54px 20px 64px}
+    .top{
+      display:flex;gap:18px;align-items:center;flex-wrap:wrap;
+      margin-bottom:22px;
+    }
+
+    .logo{
+      width:54px;height:54px;border-radius:16px;
+      background:linear-gradient(135deg,var(--blue),var(--blue2));
+      display:grid;place-items:center;
+      box-shadow:var(--shadow2);
+      flex:0 0 auto;
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .logo img{
+      width:30px;height:30px;
+      filter:drop-shadow(0 6px 14px rgba(0,0,0,.35));
+    }
+
+    h1{margin:0;font-size:30px;letter-spacing:.2px}
+    .sub{margin:7px 0 0;color:var(--muted);line-height:1.55;max-width:760px}
+    .tag{
+      display:inline-flex;gap:8px;align-items:center;
+      border:1px solid var(--border);
+      border-radius:999px;
+      padding:7px 12px;
+      background:rgba(255,255,255,.05);
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}
+    @media (max-width:940px){.grid{grid-template-columns:1fr}}
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+
+    h2{margin:0 0 8px;font-size:18px}
+    .muted{color:var(--muted)}
+    .divider{height:1px;background:var(--border);margin:16px 0}
+
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      gap:10px;
+      padding:12px 16px;
+      border-radius:12px;
+      font-weight:800;
+      text-decoration:none;
+      border:1px solid var(--border);
+      color:var(--text);
+      background:rgba(255,255,255,.06);
+      transition: transform .12s ease, filter .12s ease, box-shadow .12s ease, background .12s ease;
+      user-select:none;
+      cursor:pointer;
+    }
+    .btn.primary{
+      background:linear-gradient(135deg,var(--blue),var(--blue2));
+      border-color:transparent;
+      box-shadow: 0 10px 26px rgba(11,92,255,.28);
+    }
+    .btn.ghost{
+      background:rgba(255,255,255,.04);
+    }
+    .btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .btn:active{transform:translateY(0px);filter:brightness(0.98)}
+    .btn:focus{outline:none}
+    .btn:focus-visible{box-shadow: var(--focus)}
+
+    .pill{
+      display:inline-flex;align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      font-size:13px;
+      width:fit-content;
+    }
+
+    .codeRow{
+      display:flex;
+      gap:10px;
+      align-items:stretch;
+      margin-top:10px;
+      flex-wrap:wrap;
+    }
+    code{
+      display:block;
+      padding:12px 14px;
+      border-radius:12px;
+      background:rgba(0,0,0,.25);
+      border:1px solid var(--border);
+      color:#dbe7ff;
+      overflow:auto;
+      flex: 1 1 520px;
+    }
+    .k{color:#9bd1ff}
+
+    ol,ul{margin:10px 0 0 18px;color:var(--muted);line-height:1.65}
+    li{margin:6px 0}
+
+    .note{
+      border:1px solid var(--border);
+      background:var(--card2);
+      border-radius:var(--radius2);
+      padding:12px 14px;
+      color:var(--muted);
+      line-height:1.55;
+      margin-top:12px;
+    }
+
+    .foot{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55
+    }
+    .mini{
+      font-size:12px;color:rgba(169,182,211,.85)
+    }
+
+    .faq details{
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      border-radius:var(--radius2);
+      padding:12px 14px;
+      margin-top:10px;
+    }
+    .faq summary{
+      cursor:pointer;
+      font-weight:800;
+      color:var(--text);
+      list-style:none;
+    }
+    .faq summary::-webkit-details-marker{display:none}
+    .faq details p{margin:10px 0 0;color:var(--muted);line-height:1.6}
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <header class="top">
+      <div class="logo" aria-hidden="true">
+        <img src="./images/lixeira.png" alt="" loading="lazy" />
+      </div>
+
+      <div>
+        <h1>Diskill Message</h1>
+        <div class="sub">
+          Apaga <b>SOMENTE suas mensagens</b> em um canal ou DM no Discord (exclusão em massa).
+          Interface “premium” + instalação simples via Tampermonkey.
+        </div>
+      </div>
+
+      <div class="tag">Tampermonkey • Userscript</div>
+    </header>
+
+    <section class="grid">
+      <!-- Instalação -->
+      <article class="card">
+        <h2>Instalação</h2>
+        <div class="muted">Clique no botão abaixo para instalar/atualizar no Tampermonkey.</div>
+
+        <div class="btns">
+          <a class="btn primary" href="https://raw.githubusercontent.com/turkosx/Diskillrd-Message/main/diskill-message.user.js">
+            ✅ Instalar / Atualizar
+          </a>
+
+          <a class="btn" href="https://github.com/turkosx/Diskillrd-Message" target="_blank" rel="noreferrer">
+            ⭐ Ver no GitHub
+          </a>
+
+          <a class="btn ghost" href="https://github.com/turkosx/Diskillrd-Message/issues" target="_blank" rel="noreferrer">
+            🛠️ Suporte / Issues
+          </a>
+
+          <a class="btn ghost" href="https://www.tampermonkey.net/" target="_blank" rel="noreferrer">
+            🧩 Instalar Tampermonkey
+          </a>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="pill">🔗 Link direto do script (RAW)</div>
+        <div class="codeRow">
+          <code id="rawLink"><span class="k">raw</span>: https://raw.githubusercontent.com/turkosx/Diskillrd-Message/main/diskill-message.user.js</code>
+          <button class="btn" id="copyBtn" type="button" aria-label="Copiar link RAW">
+            📋 Copiar
+          </button>
+        </div>
+
+        <div class="note">
+          <b>Dica:</b> se ao clicar em “Instalar” abrir apenas um texto na tela,
+          confira se o Tampermonkey está ativo e se a instalação de scripts está permitida no navegador.
+        </div>
+
+        <div class="foot mini">
+          Você pode usar essa página via GitHub Pages (Settings → Pages → Deploy from branch → main / root).
+        </div>
+      </article>
+
+      <!-- Como usar / Avisos -->
+      <aside class="card">
+        <h2>Como usar</h2>
+        <ol>
+          <li>Abra o Discord no navegador e vá no canal/DM.</li>
+          <li>Clique no ícone (lixeira) e abra o painel do Diskill.</li>
+          <li>Preencha <b>Autor / Servidor / Canal</b> (ou use os botões “me/current”).</li>
+          <li>Clique em <b>Apagar</b> e acompanhe o log.</li>
+        </ol>
+
+        <div class="divider"></div>
+
+        <h2>Notas importantes</h2>
+        <ul>
+          <li>Use com cuidado: exclusões são permanentes.</li>
+          <li>O script tenta apagar somente mensagens do seu usuário.</li>
+          <li>Se bater rate limit, aumente os delays.</li>
+        </ul>
+
+        <div class="faq">
+          <details>
+            <summary>Por que às vezes dá erro/404 em algumas mensagens?</summary>
+            <p>
+              Isso pode acontecer quando o Discord não permite apagar certas mensagens (ex.: não são suas,
+              threads arquivadas, permissões, etc.). O script tenta contornar pulando o que não dá.
+            </p>
+          </details>
+          <details>
+            <summary>O Discord muda a interface com frequência?</summary>
+            <p>
+              Sim. Mudanças no site/API podem exigir atualização do script. Se quebrar, abra uma Issue no GitHub.
+            </p>
+          </details>
+        </div>
+
+        <div class="foot">
+          Repo: <a href="https://github.com/turkosx/Diskillrd-Message" target="_blank" rel="noreferrer">turkosx/Diskillrd-Message</a>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    (function(){
+      const raw = "https://raw.githubusercontent.com/turkosx/Diskillrd-Message/main/diskill-message.user.js";
+      const btn = document.getElementById("copyBtn");
+      btn?.addEventListener("click", async () => {
+        try{
+          await navigator.clipboard.writeText(raw);
+          const old = btn.textContent;
+          btn.textContent = "✅ Copiado!";
+          setTimeout(()=> btn.textContent = old, 1200);
+        }catch(e){
+          alert("Não consegui copiar automaticamente. Copie manualmente:\n\n" + raw);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

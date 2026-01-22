@@ -1,8 +1,10 @@
-## O que este PR faz?
+## O que foi feito?
+- 
+
+## Por quê?
 - 
 
 ## Checklist
-- [ ] Testei no Discord web
-- [ ] UI não quebrou (sidebar / main / logs)
-- [ ] Não removi IDs usados pelo core
-- [ ] Atualizei versão/changelog se necessário
+- [ ] Testei no Discord Web
+- [ ] Não expus token/infos sensíveis
+- [ ] Atualizei README/CHANGELOG se necessário
