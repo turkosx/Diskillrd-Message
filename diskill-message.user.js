@@ -31,48 +31,56 @@
   const HOME = 'https://github.com/turkosx/Diskillrd-Message';
   const DOCS = HOME + '#'; // você pode criar âncoras no README depois (ex: #como-usar)
 
-  // ===================== UI PREMIUM (DO ZERO) =====================
-  // Mantive o id #undiscord para não quebrar nenhum seletor/JS já esperado,
-  // mas todo o branding é "Diskill Message".
+  // ===================== UI (INSPIRADA NO MODELO) =====================
+  // Mudanças aqui: apenas CSS/HTML (IDs mantidos)
   var themeCss = (`
 /* ==========================================================
-   Diskill Message UI — Premium (Light)
+   Diskill Message UI — Admin Dark (inspirada no modelo)
    ========================================================== */
 #undiscord{
-  --dm-bg: #0b1220;
-  --dm-surface: #ffffff;
-  --dm-surface-2: #f7f9fc;
-  --dm-surface-3: #f1f5f9;
+  /* Tokens (estilo "painel admin") */
+  --dm-bg: #181818;
+  --dm-surface: #1f1f1f;
+  --dm-card: #1b1b1b;
+  --dm-card-2: #252525;
 
-  --dm-text: #0f172a;
-  --dm-muted: #5b677a;
-  --dm-muted-2: #7b8798;
+  --dm-text: #ffffff;
+  --dm-muted: #9ca3af;
+  --dm-muted-2: #6b7280;
 
-  --dm-border: #d7deea;
-  --dm-border-2: #e8eef7;
+  --dm-border: #333333;
+  --dm-border-2: #2a2a2a;
 
-  --dm-primary: #2563eb;
-  --dm-primary-hover: #1d4ed8;
-  --dm-primary-press: #1e40af;
+  --dm-primary-from: #0087ff;
+  --dm-primary-to: #00b3ff;
+  --dm-primary: #00b3ff;
+  --dm-primary-hover: #0087ff;
 
-  --dm-danger: #dc2626;
-  --dm-danger-hover: #b91c1c;
+  --dm-success: #4ade80;
 
-  --dm-focus: rgba(37, 99, 235, .22);
+  --dm-danger-from: #ff3b3b;
+  --dm-danger-to: #ff6b6b;
+  --dm-danger: #ff3b3b;
+  --dm-danger-hover: #e11d48;
 
-  --dm-radius: 16px;
-  --dm-radius-sm: 12px;
-  --dm-shadow: 0 20px 60px rgba(2, 6, 23, .18);
-  --dm-shadow-soft: 0 10px 30px rgba(2, 6, 23, .10);
+  --dm-focus: rgba(0, 179, 255, .22);
+
+  --dm-radius: 18px;
+  --dm-radius-sm: 14px;
+
+  --dm-shadow: 0 22px 70px rgba(0,0,0,.65);
+  --dm-shadow-soft: 0 10px 30px rgba(0,0,0,.45);
 
   color: var(--dm-text);
-  background: var(--dm-surface) !important;
+  background: var(--dm-bg) !important;
   border: 1px solid var(--dm-border);
 }
 
 /* Reset/Box */
 #undiscord, #undiscord * { box-sizing: border-box; }
-#undiscord { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"; }
+#undiscord { 
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
 
 /* Window container */
 #undiscord.browser{
@@ -89,22 +97,23 @@
   align-items: center;
   gap: 12px;
   padding: 0 16px;
-  border-bottom: 1px solid var(--dm-border);
+  border-bottom: 1px solid var(--dm-border-2);
   background:
-    radial-gradient(1200px 90px at 20% 0%, rgba(37,99,235,.16), transparent 55%),
-    linear-gradient(180deg, #ffffff, #fbfdff);
+    radial-gradient(900px 120px at 20% 0%, rgba(0,179,255,.22), transparent 55%),
+    linear-gradient(180deg, #202020, #181818);
   cursor: grab;
 }
 
 #undiscord .header .brandMark{
-  width: 36px;
-  height: 36px;
-  border-radius: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, rgba(37,99,235,.18), rgba(37,99,235,.06));
-  border: 1px solid var(--dm-border-2);
-  color: var(--dm-primary);
+  background:
+    linear-gradient(135deg, rgba(0,179,255,.18), rgba(74,222,128,.12));
+  border: 1px solid var(--dm-border);
+  color: #fff;
   flex: 0 0 auto;
 }
 
@@ -112,23 +121,42 @@
   margin: 0;
   font-size: 15px;
   line-height: 18px;
-  font-weight: 800;
-  color: var(--dm-text);
+  font-weight: 850;
   letter-spacing: .2px;
+
+  /* título com gradiente (como o modelo) */
+  background: linear-gradient(90deg, var(--dm-primary-to), var(--dm-success));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
+
 #undiscord .header .subtitle{
-  font-size: 12px;
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 800;
   color: var(--dm-muted);
-  font-weight: 600;
   white-space: nowrap;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+#undiscord .header .subtitle::before{
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--dm-success);
+  box-shadow: 0 0 0 6px rgba(74,222,128,.12);
 }
 #undiscord .header .spacer{ flex: 1; }
 
 #undiscord .header .iconBtn{
   width: 40px; height: 40px;
-  border-radius: 12px;
-  border: 1px solid var(--dm-border-2);
-  background: #fff;
+  border-radius: 14px;
+  border: 1px solid var(--dm-border);
+  background: rgba(17,17,17,.65);
   color: var(--dm-muted);
   display: grid;
   place-items: center;
@@ -136,26 +164,27 @@
   transition: transform .12s ease, background .12s ease, border-color .12s ease, color .12s ease;
 }
 #undiscord .header .iconBtn:hover{
-  color: var(--dm-text);
-  border-color: var(--dm-border);
-  background: var(--dm-surface-2);
+  color: #fff;
+  border-color: #444;
+  background: rgba(27,27,27,.9);
 }
 #undiscord .header .iconBtn:active{ transform: translateY(1px); }
 
 /* Layout */
 #undiscord .window-body{ height: calc(100% - 56px); display: flex; }
+
 #undiscord .sidebar{
   width: 320px;
   min-width: 300px;
   height: 100%;
   padding: 14px;
-  background: var(--dm-surface-2) !important;
-  border-right: 1px solid var(--dm-border);
+  background: var(--dm-card) !important;
+  border-right: 1px solid var(--dm-border-2);
   overflow: auto;
 }
 #undiscord .main{
   flex: 1;
-  background: var(--dm-surface) !important;
+  background: var(--dm-bg) !important;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -163,29 +192,31 @@
 #undiscord.hide-sidebar .sidebar{ display:none; }
 #undiscord.hide-sidebar .main{ max-width: 100%; }
 
-/* Sections */
+/* Sections (cards) */
 #undiscord details{
   border: 1px solid var(--dm-border);
-  background: #fff;
+  background: var(--dm-card);
   border-radius: var(--dm-radius-sm);
   margin-bottom: 12px;
   overflow: hidden;
   box-shadow: var(--dm-shadow-soft);
 }
-#undiscord details[open]{ border-color: rgba(37,99,235,.28); }
+#undiscord details[open]{ border-color: rgba(0,179,255,.35); }
 #undiscord summary{
   list-style: none;
   cursor: pointer;
   padding: 12px 12px;
-  font-weight: 800;
+  font-weight: 850;
   font-size: 13px;
-  color: var(--dm-text);
-  background:
-    linear-gradient(180deg, #ffffff, #fbfdff);
+  color: #fff;
+  background: linear-gradient(180deg, #202020, #1b1b1b);
   border-bottom: 1px solid var(--dm-border-2);
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+#undiscord summary:hover{
+  background: linear-gradient(180deg, #232323, #1c1c1c);
 }
 #undiscord summary::-webkit-details-marker{ display:none; }
 #undiscord summary::after{
@@ -201,7 +232,20 @@
   padding: 12px;
 }
 
-#undiscord legend, #undiscord label{
+#undiscord legend{
+  color: var(--dm-muted);
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  margin-bottom: 8px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+}
+#undiscord label{
   color: var(--dm-muted);
   font-size: 11px;
   font-weight: 800;
@@ -217,7 +261,7 @@
   color: var(--dm-muted);
   font-size: 12px;
   line-height: 16px;
-  font-weight: 600;
+  font-weight: 650;
 }
 
 /* Inputs */
@@ -226,23 +270,34 @@
 #undiscord input[type="search"],
 #undiscord input[type="password"],
 #undiscord input[type="datetime-local"],
-#undiscord input[type="number"]{
+#undiscord input[type="number"],
+#undiscord input[type="file"]{
   width: 100%;
   height: 42px;
   padding: 0 12px;
   border-radius: 12px;
   border: 1px solid var(--dm-border);
-  background: #fff !important;
-  color: var(--dm-text);
+  background: #111 !important;
+  color: #fff;
   font-size: 13px;
   font-weight: 650;
   outline: none;
-  transition: box-shadow .12s ease, border-color .12s ease;
+  transition: box-shadow .12s ease, border-color .12s ease, background .12s ease;
+}
+#undiscord input[type="file"]{
+  padding: 8px 12px;
+  height: auto;
 }
 #undiscord input::placeholder{ color: var(--dm-muted-2); font-weight: 650; }
 #undiscord input:focus{
-  border-color: rgba(37,99,235,.55) !important;
+  border-color: rgba(0,179,255,.75) !important;
   box-shadow: 0 0 0 4px var(--dm-focus);
+  background: #0f0f0f !important;
+}
+
+/* Checkboxes */
+#undiscord input[type="checkbox"]{
+  accent-color: var(--dm-primary);
 }
 
 /* Multi input row */
@@ -261,14 +316,14 @@
   margin-top: 6px;
   font-size: 12px;
   color: var(--dm-muted);
-  font-weight: 700;
+  font-weight: 750;
 }
 
 /* Links */
 #undiscord a{
   color: var(--dm-primary);
   text-decoration: none;
-  font-weight: 800;
+  font-weight: 850;
 }
 #undiscord a:hover{ text-decoration: underline; }
 
@@ -278,44 +333,45 @@
   border-radius: 12px;
   padding: 0 14px;
   font-size: 13px;
-  font-weight: 850;
+  font-weight: 900;
   letter-spacing: .2px;
   border: 1px solid transparent;
   cursor: pointer;
   user-select: none;
-  transition: transform .12s ease, background .12s ease, border-color .12s ease, color .12s ease;
+  transition: transform .12s ease, background .12s ease, border-color .12s ease, color .12s ease, box-shadow .12s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   white-space: nowrap;
 }
-
 #undiscord button:active{ transform: translateY(1px); }
 
 #undiscord .btn-primary{
   background: var(--dm-primary) !important;
   color: #fff;
-  border-color: rgba(37,99,235,.65);
+  border-color: rgba(0,179,255,.35);
+  box-shadow: 0 14px 30px rgba(0,179,255,.18);
 }
 #undiscord .btn-primary:hover{ background: var(--dm-primary-hover) !important; }
 
 #undiscord .btn-outline{
-  background: #fff !important;
-  color: var(--dm-primary);
-  border-color: rgba(37,99,235,.35);
+  background: transparent !important;
+  color: #e5e7eb;
+  border-color: #444;
 }
 #undiscord .btn-outline:hover{
-  background: rgba(37,99,235,.06) !important;
-  border-color: rgba(37,99,235,.55);
+  background: rgba(255,255,255,.04) !important;
+  border-color: #777;
 }
 
 #undiscord .btn-danger{
-  background: var(--dm-danger) !important;
+  background: linear-gradient(90deg, var(--dm-danger-from), var(--dm-danger-to)) !important;
   color: #fff;
-  border-color: rgba(220,38,38,.65);
+  border-color: rgba(255,107,107,.25);
+  box-shadow: 0 14px 30px rgba(255,59,59,.16);
 }
-#undiscord .btn-danger:hover{ background: var(--dm-danger-hover) !important; }
+#undiscord .btn-danger:hover{ filter: brightness(.95); }
 
 #undiscord .btn-icon{
   width: 42px;
@@ -331,8 +387,8 @@
 /* Toolbar */
 #undiscord .tbar{
   padding: 12px;
-  border-bottom: 1px solid var(--dm-border);
-  background: linear-gradient(180deg, var(--dm-surface), var(--dm-surface-2));
+  border-bottom: 1px solid var(--dm-border-2);
+  background: linear-gradient(180deg, #202020, #181818);
 }
 #undiscord .tbar .row{
   display: flex;
@@ -359,17 +415,19 @@
   border: none;
   border-radius: 999px;
   overflow: hidden;
-  background: rgba(2,6,23,.08);
+  background: rgba(255,255,255,.08);
 }
-#undiscord progress::-webkit-progress-bar{ background: rgba(2,6,23,.08); }
-#undiscord progress::-webkit-progress-value{ background: linear-gradient(90deg, var(--dm-primary), #60a5fa); }
+#undiscord progress::-webkit-progress-bar{ background: rgba(255,255,255,.08); }
+#undiscord progress::-webkit-progress-value{ 
+  background: linear-gradient(90deg, var(--dm-primary-to), var(--dm-success)); 
+}
 
 /* Log area */
 #undiscord #logArea{
   margin: 12px;
-  border-radius: 14px;
+  border-radius: 16px;
   border: 1px solid var(--dm-border);
-  background: #fff;
+  background: #111;
   padding: 12px;
   overflow: auto;
   flex: 1;
@@ -377,21 +435,43 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 12px;
   line-height: 16px;
-  color: var(--dm-text);
+  color: #e5e7eb;
 }
 #undiscord .log{ margin-bottom: 6px; }
-#undiscord .log-debug{ color: var(--dm-text); }
+#undiscord .log-debug{ color: #e5e7eb; }
 #undiscord .log-verb{ color: var(--dm-muted); }
-#undiscord .log-info{ color: var(--dm-primary); font-weight: 800; }
-#undiscord .log-warn{ color: #9a6700; font-weight: 850; }
-#undiscord .log-error{ color: #b42318; font-weight: 900; }
-#undiscord .log-success{ color: #1a7f37; font-weight: 900; }
+#undiscord .log-info{ color: var(--dm-primary); font-weight: 850; }
+#undiscord .log-warn{ color: #fbbf24; font-weight: 900; }
+#undiscord .log-error{ color: #fb7185; font-weight: 950; }
+#undiscord .log-success{ color: var(--dm-success); font-weight: 950; }
+
+/* Notice inside log */
+#undiscord .dmNotice{
+  padding: 12px;
+  border: 1px solid rgba(0,179,255,.22);
+  border-radius: 16px;
+  background: rgba(0,179,255,.07);
+  font-weight: 850;
+  color: #e5e7eb;
+}
+#undiscord .dmCenter{
+  margin-top: 10px;
+  text-align: center;
+}
+#undiscord .dmCenter .repo{
+  font-weight: 950;
+}
+#undiscord .dmCenter .hint{
+  margin-top: 6px;
+  font-weight: 800;
+  color: var(--dm-muted);
+}
 
 /* Footer */
 #undiscord .footer{
   padding: 10px 12px;
-  border-top: 1px solid var(--dm-border);
-  background: var(--dm-surface-2);
+  border-top: 1px solid var(--dm-border-2);
+  background: var(--dm-card);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -399,7 +479,7 @@
 #undiscord .footer #progressPercent{
   font-size: 12px;
   color: var(--dm-muted);
-  font-weight: 800;
+  font-weight: 850;
 }
 
 /* Resize handle */
@@ -411,17 +491,17 @@
   height: 28px;
   border-radius: 10px;
   background:
-    repeating-linear-gradient(45deg, rgba(2,6,23,.18), rgba(2,6,23,.18) 1px, transparent 2px, transparent 4px);
+    repeating-linear-gradient(45deg, rgba(255,255,255,.16), rgba(255,255,255,.16) 1px, transparent 2px, transparent 4px);
   cursor: nwse-resize;
-  border: 1px solid rgba(2,6,23,.10);
+  border: 1px solid rgba(255,255,255,.12);
 }
 
 /* Streamer (redact) */
 #undiscord.redact .priv{ display:none !important; }
 #undiscord.redact x:not(:active){
   color: transparent !important;
-  background-color: #e2e8f0 !important;
-  border-radius: 6px;
+  background-color: rgba(255,255,255,.10) !important;
+  border-radius: 8px;
   cursor: default;
   user-select: none;
 }
@@ -441,10 +521,16 @@
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
+  border-radius: 8px;
+  padding: 2px 6px;
+  transition: background .12s ease, color .12s ease;
 }
-#undicord-btn:hover{ color: #e5e7eb; }
+#undicord-btn:hover{ 
+  color: #e5e7eb; 
+  background: rgba(255,255,255,.06);
+}
 #undicord-btn progress { position: absolute; top: 23px; left: -4px; width: 32px; height: 12px; display: none; }
-#undicord-btn.running { color: #fca5a5 !important; }
+#undicord-btn.running { color: #fca5a5 !important; background: rgba(255,59,59,.08); }
 #undicord-btn.running progress { display: block; }
 
 /* Container window positioning */
@@ -466,7 +552,7 @@
 
   var dragCss = (`
 [name^="grab-"] { position: absolute; --size: 8px; --corner-size: 18px; --offset: -1px; z-index: 20; }
-[name^="grab-"]:hover{ background: rgba(37,99,235,0.10); }
+[name^="grab-"]:hover{ background: rgba(0,179,255,0.10); }
 [name="grab-t"] { top: 0px; left: var(--corner-size); right: var(--corner-size); height: var(--size); margin-top: var(--offset); cursor: ns-resize; }
 [name="grab-r"] { top: var(--corner-size); bottom: var(--corner-size); right: 0px; width: var(--size); margin-right: var(--offset); cursor: ew-resize; }
 [name="grab-b"] { bottom: 0px; left: var(--corner-size); right: var(--corner-size); height: var(--size); margin-bottom: var(--offset); cursor: ns-resize; }
@@ -479,7 +565,7 @@
 
   // Ícone do botão no Discord (lixeira estilizada)
   var buttonHtml = (`
-<div id="undicord-btn" tabindex="0" role="button" aria-label="Diskill Message" title="Diskill Message • apagar suas mensagens">
+<div id="undicord-btn" tabindex="0" role="button" aria-label="Diskill Message" title="Diskill Message • Apagar suas mensagens">
   <svg aria-hidden="false" width="22" height="22" viewBox="0 0 24 24">
     <path fill="currentColor" d="M15 3.999V2H9V3.999H3V5.999H21V3.999H15Z"></path>
     <path fill="currentColor" d="M5 6.99902V18.999C5 20.101 5.897 20.999 7 20.999H17C18.103 20.999 19 20.101 19 18.999V6.99902H5ZM11 17H9V11H11V17ZM15 17H13V11H15V17Z"></path>
@@ -500,7 +586,7 @@
 
     <div class="col" style="display:flex; flex-direction:column; gap:2px;">
       <h3>${BRAND_NAME}</h3>
-      <div class="subtitle">Apagar mensagens em massa • somente as suas</div>
+      <div class="subtitle">Apagar mensagens em massa</div>
     </div>
 
     <div class="spacer"></div>
@@ -521,7 +607,7 @@
         <summary>Geral</summary>
         <fieldset>
           <legend>
-            ID do autor
+            <span>ID do autor</span>
             <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
           </legend>
 
@@ -539,7 +625,7 @@
 
         <fieldset>
           <legend>
-            ID do servidor
+            <span>ID do servidor</span>
             <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
           </legend>
           <div class="multiInput">
@@ -552,7 +638,7 @@
 
         <fieldset>
           <legend>
-            ID do canal
+            <span>ID do canal</span>
             <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
           </legend>
           <div class="multiInput">
@@ -574,7 +660,7 @@
         <summary>Limpar arquivo (export do Discord)</summary>
         <fieldset>
           <legend>
-            Importar index.json
+            <span>Importar index.json</span>
             <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
           </legend>
 
@@ -592,7 +678,7 @@
         <summary>Filtros</summary>
         <fieldset>
           <legend>
-            Busca por texto
+            <span>Busca por texto</span>
             <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
           </legend>
 
@@ -623,7 +709,7 @@
 
         <fieldset>
           <legend>
-            Regex (opcional)
+            <span>Regex (opcional)</span>
             <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
           </legend>
 
@@ -642,7 +728,7 @@
 
         <fieldset>
           <legend>
-            Intervalo por mensagem
+            <span>Intervalo por mensagem</span>
             <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
           </legend>
 
@@ -667,7 +753,7 @@
 
         <fieldset>
           <legend>
-            Intervalo por data
+            <span>Intervalo por data</span>
             <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
           </legend>
 
@@ -690,7 +776,7 @@
 
         <fieldset>
           <legend>
-            Atraso da busca
+            <span>Atraso da busca</span>
             <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
           </legend>
 
@@ -702,7 +788,7 @@
 
         <fieldset>
           <legend>
-            Atraso da exclusão
+            <span>Atraso da exclusão</span>
             <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
           </legend>
 
@@ -718,7 +804,7 @@
 
         <fieldset>
           <legend>
-            Token de autorização
+            <span>Token de autorização</span>
             <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
           </legend>
 
@@ -767,14 +853,14 @@
       </div>
 
       <pre id="logArea" class="logarea scroll">
-<div style="padding:10px; border:1px solid rgba(37,99,235,.22); border-radius:14px; background:rgba(37,99,235,.06); font-weight:800;">
+<div class="dmNotice">
 ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e confira filtros/intervalos antes de rodar.
 </div>
 
-<center style="margin-top:10px;">
-  <div style="font-weight:900;">Repo: <a href="${HOME}" target="_blank" rel="noopener noreferrer">Diskillrd-Message</a></div>
-  <div style="margin-top:6px; font-weight:800; color:#5b677a;">Se der rate limit, aumente os atrasos no painel Avançado.</div>
-</center>
+<div class="dmCenter">
+  <div class="repo">Repo: <a href="${HOME}" target="_blank" rel="noopener noreferrer">Diskillrd-Message</a></div>
+  <div class="hint">Se der rate limit, aumente os atrasos no painel Avançado.</div>
+</div>
       </pre>
 
       <div class="footer row">
@@ -1041,7 +1127,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e confi
 
       if (this.onStop) this.onStop(this.state, this.stats);
     }
-
+// ======= PARTE 2/3 =======
     stop() {
       this.state.running = false;
       if (this.onStop) this.onStop(this.state, this.stats);
@@ -1360,7 +1446,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e confi
       }
     }
   }
-
+// ======= PARTE 3/3 =======
   class Draggable {
     constructor(targetElm, handleElm, op, options) {
       Object.assign(this, options);
@@ -1509,14 +1595,15 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e confi
   }
 
   // ======================= MESSAGE PICKER =======================
+  // (UI ajustada pro mesmo tema, sem alterar a lógica)
   const messagePickerCss = `
 body.undiscord-pick-message [data-list-id="chat-messages"] {
-  background-color: rgba(37,99,235,.06) !important;
-  box-shadow: inset 0 0 0px 2px rgba(37,99,235,.35) !important;
+  background-color: rgba(0,179,255,.06) !important;
+  box-shadow: inset 0 0 0px 2px rgba(0,179,255,.35) !important;
 }
 body.undiscord-pick-message [id^="message-content-"]:hover {
   cursor: cell;
-  background: rgba(37,99,235,.08) !important;
+  background: rgba(0,179,255,.08) !important;
 }
 body.undiscord-pick-message [id^="message-content-"]:hover::after {
   position: absolute;
@@ -1526,15 +1613,16 @@ body.undiscord-pick-message [id^="message-content-"]:hover::after {
   width: 98px;
   height: 22px;
   line-height: 22px;
-  font-family: var(--font-display);
-  background-color: #2563eb;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: linear-gradient(90deg, #0087ff, #00b3ff);
   color: #fff;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 900;
   text-transform: uppercase;
   text-align: center;
-  border-radius: 8px;
+  border-radius: 10px;
   content: 'ESTE 👉';
+  border: 1px solid rgba(255,255,255,.18);
 }
 body.undiscord-pick-message.before [id^="message-content-"]:hover::after { content: 'ANTES 👆'; }
 body.undiscord-pick-message.after [id^="message-content-"]:hover::after { content: 'DEPOIS 👇'; }

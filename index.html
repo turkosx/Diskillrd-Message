@@ -187,10 +187,59 @@
     }
     .faq summary::-webkit-details-marker{display:none}
     .faq details p{margin:10px 0 0;color:var(--muted);line-height:1.6}
+
+    /* Icons */
+    .ico{
+      width:18px;
+      height:18px;
+      display:inline-block;
+      flex:0 0 auto;
+      color:currentColor;
+      opacity:.95;
+    }
+    .ico.sm{
+      width:16px;
+      height:16px;
+    }
   </style>
 </head>
 
 <body>
+  <!-- Sprite de ícones SVG (invisível) -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <!-- download/install -->
+      <symbol id="i-download" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M5 20h14v-2H5v2zm7-18v10.17l3.59-3.58L17 10l-5 5-5-5 1.41-1.41L11 12.17V2h1z"/>
+      </symbol>
+
+      <!-- github -->
+      <symbol id="i-github" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M12 .5C5.7.5.7 5.7.7 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2.1c-3.2.7-3.9-1.4-3.9-1.4-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.2 1.9 1.2 1.1 1.9 2.9 1.4 3.6 1.1.1-.8.4-1.4.7-1.7-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.4 1.2-3.3-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2 1-.3 2-.4 3.1-.4s2.1.1 3.1.4c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.9 1.2 2 1.2 3.3 0 4.5-2.7 5.5-5.3 5.8.4.3.8 1 .8 2.1v3.2c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.3 5.7 18.3.5 12 .5z"/>
+      </symbol>
+
+      <!-- wrench/tools -->
+      <symbol id="i-tools" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M22 19.6 14.9 12.5c.4-1 .5-2 .2-3.1-1-3.1-4.5-4.6-7.4-3.1l3.2 3.2-2.1 2.1-3.2-3.2c-1.5 2.9 0 6.4 3.1 7.4 1.1.3 2.2.3 3.1-.2L19.6 22 22 19.6z"/>
+      </symbol>
+
+      <!-- puzzle -->
+      <symbol id="i-puzzle" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M20 13v-2h-2.1c-.3-1.7-1.8-3-3.6-3S11 9.3 10.9 11H8V9H4v4h2v2H4v4h4v-2h2v-2h2v2h2v2h4v-4h-2v-2h2z"/>
+      </symbol>
+
+      <!-- link -->
+      <symbol id="i-link" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M3.9 12c0-2.3 1.8-4.1 4.1-4.1h4V6H8C4.7 6 2 8.7 2 12s2.7 6 6 6h4v-1.9H8c-2.3 0-4.1-1.8-4.1-4.1zM9 13h6v-2H9v2zm7-7h-4v1.9h4c2.3 0 4.1 1.8 4.1 4.1s-1.8 4.1-4.1 4.1h-4V18h4c3.3 0 6-2.7 6-6s-2.7-6-6-6z"/>
+      </symbol>
+
+      <!-- copy -->
+      <symbol id="i-copy" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm4 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h12v16z"/>
+      </symbol>
+    </defs>
+  </svg>
+
   <main class="wrap">
     <header class="top">
       <div class="logo" aria-hidden="true">
@@ -216,29 +265,37 @@
 
         <div class="btns">
           <a class="btn primary" href="https://raw.githubusercontent.com/turkosx/Diskillrd-Message/main/diskill-message.user.js">
-            ✅ Instalar / Atualizar
+            <svg class="ico" aria-hidden="true"><use href="#i-download"></use></svg>
+            <span>Instalar / Atualizar</span>
           </a>
 
           <a class="btn" href="https://github.com/turkosx/Diskillrd-Message" target="_blank" rel="noreferrer">
-            ⭐ Ver no GitHub
+            <svg class="ico" aria-hidden="true"><use href="#i-github"></use></svg>
+            <span>Ver no GitHub</span>
           </a>
 
           <a class="btn ghost" href="https://github.com/turkosx/Diskillrd-Message/issues" target="_blank" rel="noreferrer">
-            🛠️ Suporte / Issues
+            <svg class="ico" aria-hidden="true"><use href="#i-tools"></use></svg>
+            <span>Suporte / Issues</span>
           </a>
 
           <a class="btn ghost" href="https://www.tampermonkey.net/" target="_blank" rel="noreferrer">
-            🧩 Instalar Tampermonkey
+            <svg class="ico" aria-hidden="true"><use href="#i-puzzle"></use></svg>
+            <span>Instalar Tampermonkey</span>
           </a>
         </div>
 
         <div class="divider"></div>
 
-        <div class="pill">🔗 Link direto do script (RAW)</div>
+        <div class="pill">
+          <svg class="ico sm" aria-hidden="true"><use href="#i-link"></use></svg>
+          <span>Link direto do script (RAW)</span>
+        </div>
         <div class="codeRow">
           <code id="rawLink"><span class="k">raw</span>: https://raw.githubusercontent.com/turkosx/Diskillrd-Message/main/diskill-message.user.js</code>
           <button class="btn" id="copyBtn" type="button" aria-label="Copiar link RAW">
-            📋 Copiar
+            <svg class="ico" aria-hidden="true"><use href="#i-copy"></use></svg>
+            <span class="btn-label">Copiar</span>
           </button>
         </div>
 
@@ -248,7 +305,7 @@
         </div>
 
         <div class="foot mini">
-          Você pode usar essa página via GitHub Pages (Settings → Pages → Deploy from branch → main / root).
+          Alguma dúvida ? me adicione no discord: @tur.ko
         </div>
       </article>
 
@@ -298,12 +355,15 @@
     (function(){
       const raw = "https://raw.githubusercontent.com/turkosx/Diskillrd-Message/main/diskill-message.user.js";
       const btn = document.getElementById("copyBtn");
+      const label = btn?.querySelector(".btn-label");
+
       btn?.addEventListener("click", async () => {
+        if (!label) return;
         try{
           await navigator.clipboard.writeText(raw);
-          const old = btn.textContent;
-          btn.textContent = "✅ Copiado!";
-          setTimeout(()=> btn.textContent = old, 1200);
+          const old = label.textContent;
+          label.textContent = "Copiado!";
+          setTimeout(()=> label.textContent = old, 1200);
         }catch(e){
           alert("Não consegui copiar automaticamente. Copie manualmente:\n\n" + raw);
         }
