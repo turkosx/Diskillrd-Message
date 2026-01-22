@@ -20,17 +20,7 @@ Apaga **SOMENTE suas mensagens** em um canal ou DM no Discord (exclusão em mass
 
 ## 🌐 Página de instalação (recomendado)
 
-Você pode usar o `index.html` com GitHub Pages para deixar tudo mais fácil pro pessoal.
-
-- Repo: https://github.com/turkosx/Diskillrd-Message
-
-**Ativar o Pages:**
-1. Abra **Settings → Pages**
-2. Em **Build and deployment**, selecione:
-   - **Source:** Deploy from a branch
-   - **Branch:** `main`
-   - **Folder:** `/ (root)`
-3. Salve. O GitHub vai gerar um link tipo `https://turkosx.github.io/Diskillrd-Message/`
+Link: https://turkosx.github.io/Diskillrd-Message/`
 
 ---
 
