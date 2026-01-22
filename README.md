@@ -20,7 +20,7 @@ Apaga **SOMENTE suas mensagens** em um canal ou DM no Discord (exclusão em mass
 
 ## 🌐 Página de instalação (recomendado)
 
-Link: https://turkosx.github.io/Diskillrd-Message/`
+Link: https://turkosx.github.io/Diskillrd-Message/
 
 ---
 
