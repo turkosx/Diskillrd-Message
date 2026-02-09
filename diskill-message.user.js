@@ -35,41 +35,43 @@
   // Mudanças aqui: apenas CSS/HTML (IDs mantidos)
   var themeCss = (`
 /* ==========================================================
-   Diskill Message UI — Admin Dark (inspirada no modelo)
+   Diskill Message UI — Light / Red (polido)
    ========================================================== */
 #undiscord{
-  /* Tokens (estilo "painel admin") */
-  --dm-bg: #181818;
-  --dm-surface: #1f1f1f;
-  --dm-card: #1b1b1b;
-  --dm-card-2: #252525;
+  /* Tokens (clean + vermelho) */
+  --dm-bg: #f6f7f9;
+  --dm-surface: #ffffff;
+  --dm-card: #ffffff;
+  --dm-card-2: #f3f4f6;
 
-  --dm-text: #ffffff;
-  --dm-muted: #9ca3af;
-  --dm-muted-2: #6b7280;
+  --dm-text: #111827;
+  --dm-muted: #6b7280;
+  --dm-muted-2: #9ca3af;
 
-  --dm-border: #333333;
-  --dm-border-2: #2a2a2a;
+  --dm-border: #e5e7eb;
+  --dm-border-2: #edf0f2;
 
-  --dm-primary-from: #0087ff;
-  --dm-primary-to: #00b3ff;
-  --dm-primary: #00b3ff;
-  --dm-primary-hover: #0087ff;
+  --dm-primary-from: #ff3b3b;
+  --dm-primary-to: #ff6b6b;
+  --dm-primary: #ff4d4d;
+  --dm-primary-hover: #e11d48;
 
-  --dm-success: #4ade80;
+  --dm-success: #16a34a;
 
-  --dm-danger-from: #ff3b3b;
-  --dm-danger-to: #ff6b6b;
-  --dm-danger: #ff3b3b;
-  --dm-danger-hover: #e11d48;
+  --dm-danger-from: #e11d48;
+  --dm-danger-to: #fb7185;
+  --dm-danger: #e11d48;
+  --dm-danger-hover: #be123c;
 
-  --dm-focus: rgba(0, 179, 255, .22);
+  --dm-toggle-off: #e5e7eb;
+
+  --dm-focus: rgba(255, 59, 59, .18);
 
   --dm-radius: 18px;
   --dm-radius-sm: 14px;
 
-  --dm-shadow: 0 22px 70px rgba(0,0,0,.65);
-  --dm-shadow-soft: 0 10px 30px rgba(0,0,0,.45);
+  --dm-shadow: 0 30px 80px rgba(16,24,40,.18);
+  --dm-shadow-soft: 0 12px 26px rgba(16,24,40,.12);
 
   color: var(--dm-text);
   background: var(--dm-bg) !important;
@@ -99,8 +101,8 @@
   padding: 0 16px;
   border-bottom: 1px solid var(--dm-border-2);
   background:
-    radial-gradient(900px 120px at 20% 0%, rgba(0,179,255,.22), transparent 55%),
-    linear-gradient(180deg, #202020, #181818);
+    radial-gradient(900px 120px at 20% 0%, rgba(255,59,59,.18), transparent 55%),
+    linear-gradient(180deg, #ffffff, #f4f5f7);
   cursor: grab;
 }
 
@@ -111,9 +113,9 @@
   display: grid;
   place-items: center;
   background:
-    linear-gradient(135deg, rgba(0,179,255,.18), rgba(74,222,128,.12));
+    linear-gradient(135deg, rgba(255,59,59,.18), rgba(255,107,107,.12));
   border: 1px solid var(--dm-border);
-  color: #fff;
+  color: var(--dm-danger);
   flex: 0 0 auto;
 }
 
@@ -125,7 +127,7 @@
   letter-spacing: .2px;
 
   /* título com gradiente (como o modelo) */
-  background: linear-gradient(90deg, var(--dm-primary-to), var(--dm-success));
+  background: linear-gradient(90deg, var(--dm-primary-from), var(--dm-primary-to));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -147,8 +149,8 @@
   width: 6px;
   height: 6px;
   border-radius: 999px;
-  background: var(--dm-success);
-  box-shadow: 0 0 0 6px rgba(74,222,128,.12);
+  background: var(--dm-primary);
+  box-shadow: 0 0 0 6px rgba(255,59,59,.12);
 }
 #undiscord .header .spacer{ flex: 1; }
 
@@ -156,7 +158,7 @@
   width: 40px; height: 40px;
   border-radius: 14px;
   border: 1px solid var(--dm-border);
-  background: rgba(17,17,17,.65);
+  background: #ffffff;
   color: var(--dm-muted);
   display: grid;
   place-items: center;
@@ -164,9 +166,9 @@
   transition: transform .12s ease, background .12s ease, border-color .12s ease, color .12s ease;
 }
 #undiscord .header .iconBtn:hover{
-  color: #fff;
-  border-color: #444;
-  background: rgba(27,27,27,.9);
+  color: #111827;
+  border-color: #d1d5db;
+  background: #f3f4f6;
 }
 #undiscord .header .iconBtn:active{ transform: translateY(1px); }
 
@@ -178,13 +180,13 @@
   min-width: 300px;
   height: 100%;
   padding: 14px;
-  background: var(--dm-card) !important;
+  background: var(--dm-card-2) !important;
   border-right: 1px solid var(--dm-border-2);
   overflow: auto;
 }
 #undiscord .main{
   flex: 1;
-  background: var(--dm-bg) !important;
+  background: linear-gradient(180deg, #f8fafc, #f2f4f7) !important;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -195,33 +197,33 @@
 /* Sections (cards) */
 #undiscord details{
   border: 1px solid var(--dm-border);
-  background: var(--dm-card);
+  background: var(--dm-surface);
   border-radius: var(--dm-radius-sm);
   margin-bottom: 12px;
   overflow: hidden;
   box-shadow: var(--dm-shadow-soft);
 }
-#undiscord details[open]{ border-color: rgba(0,179,255,.35); }
+#undiscord details[open]{ border-color: rgba(255,59,59,.45); }
 #undiscord summary{
   list-style: none;
   cursor: pointer;
   padding: 12px 12px;
   font-weight: 850;
   font-size: 13px;
-  color: #fff;
-  background: linear-gradient(180deg, #202020, #1b1b1b);
+  color: var(--dm-text);
+  background: linear-gradient(180deg, #ffffff, #f3f4f6);
   border-bottom: 1px solid var(--dm-border-2);
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 #undiscord summary:hover{
-  background: linear-gradient(180deg, #232323, #1c1c1c);
+  background: linear-gradient(180deg, #f9fafb, #f3f4f6);
 }
 #undiscord summary::-webkit-details-marker{ display:none; }
 #undiscord summary::after{
   content: '▾';
-  color: var(--dm-muted);
+  color: var(--dm-primary);
   font-weight: 900;
 }
 #undiscord details[open] summary::after{ content: '▴'; }
@@ -235,9 +237,9 @@
 #undiscord legend{
   color: var(--dm-muted);
   font-size: 11px;
-  font-weight: 850;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: .6px;
+  letter-spacing: .7px;
   margin-bottom: 8px;
 
   display:flex;
@@ -246,13 +248,14 @@
   gap: 10px;
 }
 #undiscord label{
-  color: var(--dm-muted);
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: .6px;
-  margin-bottom: 8px;
-  display: block;
+  color: var(--dm-text);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .2px;
+  margin-bottom: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
 #undiscord .sectionDescription{
@@ -260,8 +263,8 @@
   margin-bottom: 8px;
   color: var(--dm-muted);
   font-size: 12px;
-  line-height: 16px;
-  font-weight: 650;
+  line-height: 17px;
+  font-weight: 600;
 }
 
 /* Inputs */
@@ -273,12 +276,12 @@
 #undiscord input[type="number"],
 #undiscord input[type="file"]{
   width: 100%;
-  height: 42px;
+  height: 40px;
   padding: 0 12px;
   border-radius: 12px;
   border: 1px solid var(--dm-border);
-  background: #111 !important;
-  color: #fff;
+  background: #fff !important;
+  color: var(--dm-text);
   font-size: 13px;
   font-weight: 650;
   outline: none;
@@ -290,14 +293,73 @@
 }
 #undiscord input::placeholder{ color: var(--dm-muted-2); font-weight: 650; }
 #undiscord input:focus{
-  border-color: rgba(0,179,255,.75) !important;
+  border-color: rgba(255,59,59,.75) !important;
   box-shadow: 0 0 0 4px var(--dm-focus);
-  background: #0f0f0f !important;
+  background: #fff !important;
 }
 
-/* Checkboxes */
-#undiscord input[type="checkbox"]{
-  accent-color: var(--dm-primary);
+/* Toggles */
+#undiscord .toggle{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  color: var(--dm-text);
+  font-size: 12px;
+  font-weight: 700;
+}
+#undiscord .toggle input{
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+#undiscord .toggle .toggle-ui{
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--dm-toggle-off);
+  border: 1px solid var(--dm-border);
+  position: relative;
+  flex: 0 0 auto;
+  transition: background .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+#undiscord .toggle .toggle-ui::after{
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 3px 6px rgba(16,24,40,.18);
+  transition: transform .15s ease;
+}
+#undiscord .toggle input:checked + .toggle-ui{
+  background: linear-gradient(90deg, var(--dm-primary-from), var(--dm-primary-to));
+  border-color: rgba(255,59,59,.6);
+  box-shadow: 0 0 0 4px var(--dm-focus);
+}
+#undiscord .toggle input:checked + .toggle-ui::after{
+  transform: translateX(20px);
+}
+#undiscord .toggle input:focus-visible + .toggle-ui{
+  box-shadow: 0 0 0 4px var(--dm-focus);
+}
+#undiscord .toggle--compact .toggle-ui{
+  width: 38px;
+  height: 20px;
+}
+#undiscord .toggle--compact .toggle-ui::after{
+  width: 16px;
+  height: 16px;
+}
+#undiscord .toggle--compact input:checked + .toggle-ui::after{
+  transform: translateX(18px);
 }
 
 /* Multi input row */
@@ -305,6 +367,22 @@
   display: flex;
   gap: 8px;
   align-items: center;
+}
+#undiscord .multiInput > button{
+  min-width: 90px;
+}
+
+#undiscord .spacer{ flex: 1; }
+
+#undiscord .toggle-group{
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 6px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--dm-border);
+  background: var(--dm-card-2);
 }
 
 /* Range */
@@ -329,7 +407,7 @@
 
 /* Buttons */
 #undiscord button{
-  height: 42px;
+  height: 40px;
   border-radius: 12px;
   padding: 0 14px;
   font-size: 13px;
@@ -348,33 +426,33 @@
 #undiscord button:active{ transform: translateY(1px); }
 
 #undiscord .btn-primary{
-  background: var(--dm-primary) !important;
+  background: linear-gradient(90deg, var(--dm-primary-from), var(--dm-primary-to)) !important;
   color: #fff;
-  border-color: rgba(0,179,255,.35);
-  box-shadow: 0 14px 30px rgba(0,179,255,.18);
+  border-color: rgba(255,59,59,.45);
+  box-shadow: 0 14px 30px rgba(255,59,59,.22);
 }
-#undiscord .btn-primary:hover{ background: var(--dm-primary-hover) !important; }
+#undiscord .btn-primary:hover{ filter: brightness(.97); }
 
 #undiscord .btn-outline{
-  background: transparent !important;
-  color: #e5e7eb;
-  border-color: #444;
+  background: #fff !important;
+  color: #374151;
+  border-color: var(--dm-border);
 }
 #undiscord .btn-outline:hover{
-  background: rgba(255,255,255,.04) !important;
-  border-color: #777;
+  background: var(--dm-card-2) !important;
+  border-color: #d1d5db;
 }
 
 #undiscord .btn-danger{
-  background: linear-gradient(90deg, var(--dm-danger-from), var(--dm-danger-to)) !important;
-  color: #fff;
-  border-color: rgba(255,107,107,.25);
-  box-shadow: 0 14px 30px rgba(255,59,59,.16);
+  background: #fff !important;
+  color: #b91c1c;
+  border-color: rgba(255,59,59,.45);
+  box-shadow: none;
 }
-#undiscord .btn-danger:hover{ filter: brightness(.95); }
+#undiscord .btn-danger:hover{ background: rgba(255,59,59,.08) !important; }
 
 #undiscord .btn-icon{
-  width: 42px;
+  width: 40px;
   padding: 0;
 }
 
@@ -388,7 +466,7 @@
 #undiscord .tbar{
   padding: 12px;
   border-bottom: 1px solid var(--dm-border-2);
-  background: linear-gradient(180deg, #202020, #181818);
+  background: linear-gradient(180deg, #ffffff, #f3f4f6);
 }
 #undiscord .tbar .row{
   display: flex;
@@ -398,14 +476,6 @@
 }
 #undiscord .tbar .row label{
   margin: 0;
-  font-size: 12px;
-  text-transform: none;
-  letter-spacing: 0;
-  font-weight: 800;
-  color: var(--dm-muted);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
 }
 #undiscord .tbar progress{ width: 100%; height: 10px; margin-top: 10px; }
 
@@ -415,11 +485,11 @@
   border: none;
   border-radius: 999px;
   overflow: hidden;
-  background: rgba(255,255,255,.08);
+  background: #e5e7eb;
 }
-#undiscord progress::-webkit-progress-bar{ background: rgba(255,255,255,.08); }
+#undiscord progress::-webkit-progress-bar{ background: #e5e7eb; }
 #undiscord progress::-webkit-progress-value{ 
-  background: linear-gradient(90deg, var(--dm-primary-to), var(--dm-success)); 
+  background: linear-gradient(90deg, var(--dm-primary-from), var(--dm-primary-to)); 
 }
 
 /* Log area */
@@ -427,7 +497,7 @@
   margin: 12px;
   border-radius: 16px;
   border: 1px solid var(--dm-border);
-  background: #111;
+  background: #ffffff;
   padding: 12px;
   overflow: auto;
   flex: 1;
@@ -435,24 +505,24 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 12px;
   line-height: 16px;
-  color: #e5e7eb;
+  color: var(--dm-text);
 }
 #undiscord .log{ margin-bottom: 6px; }
-#undiscord .log-debug{ color: #e5e7eb; }
+#undiscord .log-debug{ color: var(--dm-text); }
 #undiscord .log-verb{ color: var(--dm-muted); }
 #undiscord .log-info{ color: var(--dm-primary); font-weight: 850; }
-#undiscord .log-warn{ color: #fbbf24; font-weight: 900; }
-#undiscord .log-error{ color: #fb7185; font-weight: 950; }
+#undiscord .log-warn{ color: #f59e0b; font-weight: 900; }
+#undiscord .log-error{ color: #ef4444; font-weight: 950; }
 #undiscord .log-success{ color: var(--dm-success); font-weight: 950; }
 
 /* Notice inside log */
 #undiscord .dmNotice{
   padding: 12px;
-  border: 1px solid rgba(0,179,255,.22);
+  border: 1px solid #fecdd3;
   border-radius: 16px;
-  background: rgba(0,179,255,.07);
-  font-weight: 850;
-  color: #e5e7eb;
+  background: #fff1f2;
+  font-weight: 800;
+  color: #7f1d1d;
 }
 #undiscord .dmCenter{
   margin-top: 10px;
@@ -471,7 +541,7 @@
 #undiscord .footer{
   padding: 10px 12px;
   border-top: 1px solid var(--dm-border-2);
-  background: var(--dm-card);
+  background: #ffffff;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -491,16 +561,16 @@
   height: 28px;
   border-radius: 10px;
   background:
-    repeating-linear-gradient(45deg, rgba(255,255,255,.16), rgba(255,255,255,.16) 1px, transparent 2px, transparent 4px);
+    repeating-linear-gradient(45deg, rgba(17,24,39,.12), rgba(17,24,39,.12) 1px, transparent 2px, transparent 4px);
   cursor: nwse-resize;
-  border: 1px solid rgba(255,255,255,.12);
+  border: 1px solid rgba(17,24,39,.12);
 }
 
 /* Streamer (redact) */
 #undiscord.redact .priv{ display:none !important; }
 #undiscord.redact x:not(:active){
   color: transparent !important;
-  background-color: rgba(255,255,255,.10) !important;
+  background-color: rgba(17,24,39,.08) !important;
   border-radius: 8px;
   cursor: default;
   user-select: none;
@@ -526,11 +596,11 @@
   transition: background .12s ease, color .12s ease;
 }
 #undicord-btn:hover{ 
-  color: #e5e7eb; 
-  background: rgba(255,255,255,.06);
+  color: #fca5a5; 
+  background: rgba(255,59,59,.12);
 }
 #undicord-btn progress { position: absolute; top: 23px; left: -4px; width: 32px; height: 12px; display: none; }
-#undicord-btn.running { color: #fca5a5 !important; background: rgba(255,59,59,.08); }
+#undicord-btn.running { color: #ef4444 !important; background: rgba(255,59,59,.18); }
 #undicord-btn.running progress { display: block; }
 
 /* Container window positioning */
@@ -552,7 +622,7 @@
 
   var dragCss = (`
 [name^="grab-"] { position: absolute; --size: 8px; --corner-size: 18px; --offset: -1px; z-index: 20; }
-[name^="grab-"]:hover{ background: rgba(0,179,255,0.10); }
+[name^="grab-"]:hover{ background: rgba(255,59,59,0.12); }
 [name="grab-t"] { top: 0px; left: var(--corner-size); right: var(--corner-size); height: var(--size); margin-top: var(--offset); cursor: ns-resize; }
 [name="grab-r"] { top: var(--corner-size); bottom: var(--corner-size); right: 0px; width: var(--size); margin-right: var(--offset); cursor: ew-resize; }
 [name="grab-b"] { bottom: 0px; left: var(--corner-size); right: var(--corner-size); height: var(--size); margin-bottom: var(--offset); cursor: ns-resize; }
@@ -586,7 +656,7 @@
 
     <div class="col" style="display:flex; flex-direction:column; gap:2px;">
       <h3>${BRAND_NAME}</h3>
-      <div class="subtitle">Apagar mensagens em massa</div>
+      <div class="subtitle">Exclusão em massa de mensagens</div>
     </div>
 
     <div class="spacer"></div>
@@ -607,61 +677,63 @@
         <summary>Geral</summary>
         <fieldset>
           <legend>
-            <span>ID do autor</span>
-            <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
+            <span>ID do usuário</span>
+            <a href="{{DOCS}}" title="Como obter" target="_blank" rel="noopener noreferrer">como obter</a>
           </legend>
 
           <div class="multiInput">
             <div class="input-wrapper">
-              <input id="authorId" type="text" priv placeholder="Seu ID (recomendado: automático)">
+              <input id="authorId" type="text" priv placeholder="Seu ID (auto se vazio)">
             </div>
-            <button id="getAuthor" class="btn-outline">eu</button>
+            <button id="getAuthor" class="btn-outline">meu ID</button>
           </div>
 
           <div class="sectionDescription">
-            Dica: se você deixar vazio, o script preenche automaticamente com seu ID.
+            Dica: deixe em branco para preencher automaticamente com seu ID.
           </div>
         </fieldset>
 
         <fieldset>
           <legend>
             <span>ID do servidor</span>
-            <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
+            <a href="{{DOCS}}" title="Como obter" target="_blank" rel="noopener noreferrer">como obter</a>
           </legend>
           <div class="multiInput">
             <div class="input-wrapper">
               <input id="guildId" type="text" priv placeholder="Ex: 123... ou @me (DMs)">
             </div>
-            <button id="getGuild" class="btn-outline">atual</button>
+            <button id="getGuild" class="btn-outline">servidor</button>
           </div>
         </fieldset>
 
         <fieldset>
           <legend>
             <span>ID do canal</span>
-            <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
+            <a href="{{DOCS}}" title="Como obter" target="_blank" rel="noopener noreferrer">como obter</a>
           </legend>
           <div class="multiInput">
             <div class="input-wrapper">
               <input id="channelId" type="text" priv placeholder="Ex: 123... (ou vários separados por vírgula)">
             </div>
-            <button id="getChannel" class="btn-outline">atual</button>
+            <button id="getChannel" class="btn-outline">canal</button>
           </div>
 
           <div class="sectionDescription">
-            <label style="display:flex; align-items:center; gap:8px;">
-              <input id="includeNsfw" type="checkbox"> Este é um canal NSFW
+            <label class="toggle">
+              <input id="includeNsfw" type="checkbox">
+              <span class="toggle-ui" aria-hidden="true"></span>
+              <span>Canal NSFW</span>
             </label>
           </div>
         </fieldset>
       </details>
 
       <details>
-        <summary>Limpar arquivo (export do Discord)</summary>
+        <summary>Importar arquivo do Discord</summary>
         <fieldset>
           <legend>
-            <span>Importar index.json</span>
-            <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
+            <span>Arquivo de mensagens (index.json)</span>
+            <a href="{{DOCS}}" title="Como obter" target="_blank" rel="noopener noreferrer">como obter</a>
           </legend>
 
           <div class="input-wrapper">
@@ -669,7 +741,7 @@
           </div>
 
           <div class="sectionDescription">
-            Depois de solicitar seus dados ao Discord, importe o arquivo <b>messages/index.json</b>.
+            Após solicitar seus dados ao Discord, importe o arquivo <b>messages/index.json</b>.
           </div>
         </fieldset>
       </details>
@@ -678,31 +750,37 @@
         <summary>Filtros</summary>
         <fieldset>
           <legend>
-            <span>Busca por texto</span>
-            <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
+            <span>Filtro por texto</span>
+            <a href="{{DOCS}}" title="Como obter" target="_blank" rel="noopener noreferrer">como obter</a>
           </legend>
 
           <div class="input-wrapper">
-            <input id="search" type="text" placeholder="Contendo texto" priv>
+            <input id="search" type="text" placeholder="Texto contém" priv>
           </div>
 
-          <div class="sectionDescription">Apaga apenas mensagens que contenham o texto.</div>
+          <div class="sectionDescription">Apaga apenas mensagens que contenham o texto informado.</div>
 
           <div class="sectionDescription">
-            <label style="display:flex; align-items:center; gap:8px;">
-              <input id="hasLink" type="checkbox"> tem: link
+            <label class="toggle">
+              <input id="hasLink" type="checkbox">
+              <span class="toggle-ui" aria-hidden="true"></span>
+              <span>Contém link</span>
             </label>
           </div>
 
           <div class="sectionDescription">
-            <label style="display:flex; align-items:center; gap:8px;">
-              <input id="hasFile" type="checkbox"> tem: arquivo
+            <label class="toggle">
+              <input id="hasFile" type="checkbox">
+              <span class="toggle-ui" aria-hidden="true"></span>
+              <span>Contém arquivo</span>
             </label>
           </div>
 
           <div class="sectionDescription">
-            <label style="display:flex; align-items:center; gap:8px;">
-              <input id="includePinned" type="checkbox"> incluir fixadas
+            <label class="toggle">
+              <input id="includePinned" type="checkbox">
+              <span class="toggle-ui" aria-hidden="true"></span>
+              <span>Incluir fixadas</span>
             </label>
           </div>
         </fieldset>
@@ -710,11 +788,11 @@
         <fieldset>
           <legend>
             <span>Regex (opcional)</span>
-            <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
+            <a href="{{DOCS}}" title="Como obter" target="_blank" rel="noopener noreferrer">como obter</a>
           </legend>
 
           <div class="sectionDescription">
-            Apaga mensagens que combinem com a expressão regular.
+            Apaga mensagens que combinem com a expressão regular informada.
           </div>
 
           <div class="input-wrapper">
@@ -728,33 +806,33 @@
 
         <fieldset>
           <legend>
-            <span>Intervalo por mensagem</span>
-            <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
+            <span>Por ID de mensagem</span>
+            <a href="{{DOCS}}" title="Como obter" target="_blank" rel="noopener noreferrer">como obter</a>
           </legend>
 
           <div class="multiInput">
             <div class="input-wrapper">
-              <input id="minId" type="text" placeholder="Depois de uma mensagem" priv>
+              <input id="minId" type="text" placeholder="Depois desta mensagem" priv>
             </div>
-            <button id="pickMessageAfter" class="btn-outline">escolher</button>
+            <button id="pickMessageAfter" class="btn-outline">selecionar</button>
           </div>
 
           <div class="multiInput" style="margin-top:10px;">
             <div class="input-wrapper">
-              <input id="maxId" type="text" placeholder="Antes de uma mensagem" priv>
+              <input id="maxId" type="text" placeholder="Antes desta mensagem" priv>
             </div>
-            <button id="pickMessageBefore" class="btn-outline">escolher</button>
+            <button id="pickMessageBefore" class="btn-outline">selecionar</button>
           </div>
 
           <div class="sectionDescription">
-            Use isso para limitar o intervalo pelo ID da mensagem.
+            Use para limitar o intervalo pelo ID da mensagem.
           </div>
         </fieldset>
 
         <fieldset>
           <legend>
-            <span>Intervalo por data</span>
-            <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
+            <span>Por data</span>
+            <a href="{{DOCS}}" title="Como obter" target="_blank" rel="noopener noreferrer">como obter</a>
           </legend>
 
           <div class="input-wrapper">
@@ -766,7 +844,7 @@
           </div>
 
           <div class="sectionDescription">
-            * O filtro por data não funciona se você usar o intervalo por mensagem.
+            Obs.: o filtro por data não funciona se você usar intervalo por mensagem.
           </div>
         </fieldset>
       </details>
@@ -776,8 +854,8 @@
 
         <fieldset>
           <legend>
-            <span>Atraso da busca</span>
-            <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
+            <span>Atraso de busca</span>
+            <a href="{{DOCS}}" title="Como obter" target="_blank" rel="noopener noreferrer">como obter</a>
           </legend>
 
           <div class="input-wrapper">
@@ -788,8 +866,8 @@
 
         <fieldset>
           <legend>
-            <span>Atraso da exclusão</span>
-            <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
+            <span>Atraso entre exclusões</span>
+            <a href="{{DOCS}}" title="Como obter" target="_blank" rel="noopener noreferrer">como obter</a>
           </legend>
 
           <div class="input-wrapper">
@@ -798,14 +876,14 @@
           </div>
 
           <div class="sectionDescription">
-            Ajuste para reduzir risco de rate limit.
+            Ajuste para reduzir o risco de rate limit.
           </div>
         </fieldset>
 
         <fieldset>
           <legend>
             <span>Token de autorização</span>
-            <a href="{{DOCS}}" title="Ajuda" target="_blank" rel="noopener noreferrer">ajuda</a>
+            <a href="{{DOCS}}" title="Como obter" target="_blank" rel="noopener noreferrer">como obter</a>
           </legend>
 
           <div class="multiInput">
@@ -829,24 +907,32 @@
           <button id="toggleSidebar" class="btn-outline btn-icon" title="Mostrar/ocultar painel">☰</button>
 
           <button id="start" class="btn-primary" style="min-width: 170px;" title="Iniciar exclusão">
-            ▶︎ Apagar
+            Apagar
           </button>
 
           <button id="stop" class="btn-danger" title="Parar" disabled>
-            🛑 Parar
+            Parar
           </button>
 
           <button id="clear" class="btn-outline" title="Limpar log">
             Limpar log
           </button>
 
-          <label title="Ocultar informações sensíveis para prints/stream">
-            <input id="redact" type="checkbox" checked> Modo streamer
-          </label>
+          <span class="spacer"></span>
 
-          <label title="Auto rolar log enquanto roda">
-            <input id="autoScroll" type="checkbox" checked> Rolagem automática
-          </label>
+          <div class="toggle-group">
+            <label class="toggle toggle--compact" title="Ocultar informações sensíveis para prints ou stream">
+              <input id="redact" type="checkbox" checked>
+              <span class="toggle-ui" aria-hidden="true"></span>
+              <span>Modo streamer</span>
+            </label>
+
+            <label class="toggle toggle--compact" title="Rolar o log automaticamente durante a execução">
+              <input id="autoScroll" type="checkbox" checked>
+              <span class="toggle-ui" aria-hidden="true"></span>
+              <span>Rolagem automática</span>
+            </label>
+          </div>
         </div>
 
         <progress id="progressBar" style="display:none;"></progress>
@@ -854,12 +940,12 @@
 
       <pre id="logArea" class="logarea scroll">
 <div class="dmNotice">
-${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e confira filtros/intervalos antes de rodar.
+${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revise filtros e intervalos antes de iniciar.
 </div>
 
 <div class="dmCenter">
   <div class="repo">Repo: <a href="${HOME}" target="_blank" rel="noopener noreferrer">Diskillrd-Message</a></div>
-  <div class="hint">Se der rate limit, aumente os atrasos no painel Avançado.</div>
+  <div class="hint">Se ocorrer rate limit, aumente os atrasos no painel Avançado.</div>
 </div>
       </pre>
 
@@ -1576,12 +1662,12 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e confi
   // (UI ajustada pro mesmo tema, sem alterar a lógica)
   const messagePickerCss = `
 body.undiscord-pick-message [data-list-id="chat-messages"] {
-  background-color: rgba(0,179,255,.06) !important;
-  box-shadow: inset 0 0 0px 2px rgba(0,179,255,.35) !important;
+  background-color: rgba(255,59,59,.06) !important;
+  box-shadow: inset 0 0 0px 2px rgba(255,59,59,.35) !important;
 }
 body.undiscord-pick-message [id^="message-content-"]:hover {
   cursor: cell;
-  background: rgba(0,179,255,.08) !important;
+  background: rgba(255,59,59,.08) !important;
 }
 body.undiscord-pick-message [id^="message-content-"]:hover::after {
   position: absolute;
@@ -1592,7 +1678,7 @@ body.undiscord-pick-message [id^="message-content-"]:hover::after {
   height: 22px;
   line-height: 22px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: linear-gradient(90deg, #0087ff, #00b3ff);
+  background: linear-gradient(90deg, #ff3b3b, #ff6b6b);
   color: #fff;
   font-size: 12px;
   font-weight: 900;
@@ -1865,11 +1951,11 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
 
     $('#redact').onchange = () => {
       const b = ui.window.classList.toggle('redact');
-      if (b) alert('Modo streamer ativo.\nConfira sempre se não ficou nada sensível na tela.');
+      if (b) alert('Modo streamer ativado.\nConfira se não ficou nada sensível na tela.');
     };
 
     $('#pickMessageAfter').onclick = async () => {
-      alert('Selecione uma mensagem no chat.\nA mensagem ABAIXO dela será apagada.');
+      alert('Selecione uma mensagem no chat.\nA mensagem abaixo dela será apagada.');
       toggleWindow();
       const id = await messagePicker.grab('after');
       if (id) $('input#minId').value = id;
@@ -1877,7 +1963,7 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
     };
 
     $('#pickMessageBefore').onclick = async () => {
-      alert('Selecione uma mensagem no chat.\nA mensagem ACIMA dela será apagada.');
+      alert('Selecione uma mensagem no chat.\nA mensagem acima dela será apagada.');
       toggleWindow();
       const id = await messagePicker.grab('before');
       if (id) $('input#maxId').value = id;
