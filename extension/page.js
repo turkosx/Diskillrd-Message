@@ -2178,34 +2178,72 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
     setupCoreHooks();
   }
 
-  function isSafeStatusLine(text) {
-    return [
-      /^Iniciado em /i,
-      /^Encerrado em /i,
-      /^Buscando mensagens/i,
-      /^Total geral:/i,
-      /^Aguardando /i,
-      /^Tempo estimado restante:/i,
-      /^Atraso exclusão:/i,
-      /^Rate limited:/i,
-      /^Rate limit/i,
-      /^Apagadas /i,
-      /^Parado por você!/i,
-      /^Nada para apagar nesta página/i,
-      /^Finalizado: a API retornou página vazia/i,
-      /^Rodando lote com /i,
-      /^Iniciando tarefa\.\.\./i,
-      /^Tarefa finalizada\./i,
-      /^Lote finalizado\./i,
-      /^Este canal ainda não foi indexado/i,
-    ].some((re) => re.test(text));
-  }
-
   function safeArgToText(arg) {
     if (typeof arg === 'string') return arg;
     if (typeof arg === 'number' || typeof arg === 'boolean') return String(arg);
     if (arg instanceof Error) return arg.message || 'Erro';
     return '';
+  }
+
+  const statusBuffer = new Map();
+  const statusOrder = [
+    'search',
+    'total',
+    'etr',
+    'delay',
+    'rate_limit',
+    'rate_limited',
+    'indexing',
+  ];
+  const statusMatchers = [
+    { key: 'search', re: /^Buscando mensagens/i },
+    { key: 'total', re: /^Total geral:/i },
+    { key: 'etr', re: /^Tempo estimado restante:/i },
+    { key: 'delay', re: /^Atraso exclusão:/i },
+    { key: 'rate_limit', re: /^Rate limit/i },
+    { key: 'rate_limited', re: /^Rate limited:/i },
+    { key: 'indexing', re: /^Este canal ainda não foi indexado/i },
+  ];
+  const isAwaitLine = (text) => /^Aguardando /i.test(text);
+  const isImmediateLine = (text) => [
+    /^Iniciado em /i,
+    /^Encerrado em /i,
+    /^Apagadas /i,
+    /^Parado por você!/i,
+    /^Nada para apagar nesta página/i,
+    /^Finalizado: a API retornou página vazia/i,
+    /^Rodando lote com /i,
+    /^Iniciando tarefa\.\.\./i,
+    /^Tarefa finalizada\./i,
+    /^Lote finalizado\./i,
+  ].some((re) => re.test(text));
+
+  function getStatusKey(text) {
+    for (const { key, re } of statusMatchers) {
+      if (re.test(text)) return key;
+    }
+    return null;
+  }
+
+  function appendLogLine(text, type = 'info') {
+    const line = document.createElement('div');
+    const safeType = type === 'debug' ? 'info' : (type || 'info');
+    line.className = `log log-${safeType}`;
+    line.insertAdjacentHTML('beforeend', getLogIcon(safeType));
+    const textEl = document.createElement('div');
+    textEl.className = 'log-text';
+    textEl.textContent = text;
+    line.appendChild(textEl);
+    ui.logArea.appendChild(line);
+    if (ui.autoScroll.checked) line.scrollIntoView(false);
+  }
+
+  function flushStatusBuffer() {
+    for (const key of statusOrder) {
+      const item = statusBuffer.get(key);
+      if (item) appendLogLine(item.text, item.type);
+    }
+    statusBuffer.clear();
   }
 
   function printLog(type = '', args) {
@@ -2215,29 +2253,26 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
     if (!cleaned) return;
 
     if (type === 'msg') {
-      const line = document.createElement('div');
-      line.className = 'log log-info';
-      line.insertAdjacentHTML('beforeend', getLogIcon('info'));
-      const text = document.createElement('div');
-      text.className = 'log-text';
-      text.textContent = cleaned;
-      line.appendChild(text);
-      ui.logArea.appendChild(line);
-      if (ui.autoScroll.checked) line.scrollIntoView(false);
+      appendLogLine(cleaned, 'info');
       return;
     }
 
-    if (!isSafeStatusLine(cleaned)) return;
+    if (isImmediateLine(cleaned)) {
+      appendLogLine(cleaned, safeType);
+      return;
+    }
 
-    const line = document.createElement('div');
-    line.className = `log log-${safeType}`;
-    line.insertAdjacentHTML('beforeend', getLogIcon(safeType));
-    const text = document.createElement('div');
-    text.className = 'log-text';
-    text.textContent = cleaned;
-    line.appendChild(text);
-    ui.logArea.appendChild(line);
-    if (ui.autoScroll.checked) line.scrollIntoView(false);
+    if (isAwaitLine(cleaned)) {
+      appendLogLine(cleaned, safeType);
+      flushStatusBuffer();
+      return;
+    }
+
+    const statusKey = getStatusKey(cleaned);
+    if (statusKey) {
+      statusBuffer.set(statusKey, { text: cleaned, type: safeType });
+      return;
+    }
   }
 
   function setupCoreHooks() {
