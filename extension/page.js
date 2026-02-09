@@ -1031,16 +1031,7 @@
         <progress id="progressBar" style="display:none;"></progress>
       </div>
 
-      <div id="logArea" class="logarea scroll">
-<div class="dmNotice">
-${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revise filtros e intervalos antes de iniciar.
-</div>
-
-<div class="dmCenter">
-  <div class="repo">Repo: <a href="${HOME}" target="_blank" rel="noopener noreferrer">Diskillrd-Message</a></div>
-  <div class="hint">Se ocorrer rate limit, aumente os atrasos no painel Avançado.</div>
-</div>
-      </div>
+      <div id="logArea" class="logarea scroll"></div>
 
       <div class="footer row">
         <div id="progressPercent"></div>
@@ -1054,6 +1045,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
 
   // ======================= LOG =======================
   const log = {
+    msg() { return logFn ? logFn('msg', arguments) : console.log.apply(console, arguments); },
     debug() { return logFn ? logFn('debug', arguments) : console.debug.apply(console, arguments); },
     info() { return logFn ? logFn('info', arguments) : console.info.apply(console, arguments); },
     verb() { return logFn ? logFn('verb', arguments) : console.log.apply(console, arguments); },
@@ -1166,6 +1158,28 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
   const toSnowflake = (date) => /:/.test(date) ? ((new Date(date).getTime() - 1420070400000) * Math.pow(2, 22)) : date;
   const replaceInterpolations = (str, obj, removeMissing = false) =>
     str.replace(/\{\{([\w_]+)\}\}/g, (m, key) => obj[key] || (removeMissing ? '' : m));
+
+  const pad2 = (n) => String(n ?? 0).padStart(2, '0');
+  const displayName = (msg) => {
+    const user = msg?.author;
+    if (!user) return 'Usuário';
+    const base = user.username || user.global_name || 'Usuário';
+    const discr = user.discriminator && user.discriminator !== '0' ? `#${user.discriminator}` : '';
+    return `${base}${discr}`;
+  };
+  const displayMessage = (msg) => {
+    if (!msg) return '[sem mensagem]';
+    if (msg.content && msg.content.trim()) return msg.content.replace(/\s+/g, ' ').trim();
+    if (msg.attachments && msg.attachments.length) return `[${msg.attachments.length} anexo(s)]`;
+    return '[sem texto]';
+  };
+  const formatLogLine = (msg, current, total) => {
+    const ts = msg?.timestamp ? new Date(msg.timestamp).toLocaleString() : '-';
+    if (isRedactMode()) {
+      return `[${pad2(current)}/${pad2(total)}] ${pad2(current)} - ${ts} - [oculto] - [oculto]`;
+    }
+    return `[${pad2(current)}/${pad2(total)}] ${pad2(current)} - ${ts} - ${displayName(msg)} - ${displayMessage(msg)}`;
+  };
 
   // ======================= DOM HELPERS =======================
   function createElm(html) {
@@ -1467,21 +1481,9 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
           continue;
         }
 
-        const content = message.content
-          ? redact(message.content).replace(/\n/g, '↵')
-          : redact('[sem texto]');
-        const attachmentsInfo = message.attachments?.length
-          ? ` ${redact(`[${message.attachments.length} anexo(s)]`)}`
-          : '';
-
-        log.debug(
-          `[${this.state.delCount + 1}/${this.state.grandTotal}] ` +
-          `<sup>${new Date(message.timestamp).toLocaleString()}</sup> ` +
-          `<b>${redact(message.author.username + '#' + message.author.discriminator)}</b>` +
-          `: <i>${content}</i>` +
-          attachmentsInfo,
-          `<sup>{ID:${redact(message.id)}}</sup>`
-        );
+        const current = this.state.delCount + this.state.failCount + 1;
+        const total = Math.max(this.state.grandTotal, current);
+        log.msg(formatLogLine(message, current, total));
 
         let attempt = 0;
         while (attempt < this.options.maxAttempt) {
@@ -2100,7 +2102,10 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
 
     $('#redact').onchange = () => {
       const b = ui.window.classList.toggle('redact');
-      if (b) alert('Modo streamer ativado.\nConfira se não ficou nada sensível na tela.');
+      if (b) {
+        ui.logArea.innerHTML = '';
+        alert('Modo streamer ativado.\nO log foi limpo para evitar vazamentos.');
+      }
     };
 
     $('#pickMessageAfter').onclick = async () => {
@@ -2162,16 +2167,23 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
   }
 
   function printLog(type = '', args) {
-    const safeType = type || 'info';
-    const icon = getLogIcon(safeType);
-    ui.logArea.insertAdjacentHTML(
-      'beforeend',
-      `<div class="log log-${safeType}">${icon}<div class="log-text">${Array.from(args)
-        .map(formatLogArg)
-        .join('\t')}</div></div>`
-    );
-    if (ui.autoScroll.checked) ui.logArea.querySelector('div:last-child').scrollIntoView(false);
-    if (type === 'error') console.error(PREFIX, ...Array.from(args));
+    if (type !== 'msg') return;
+
+    const line = document.createElement('div');
+    line.className = 'log log-info';
+
+    const icon = document.createElement('span');
+    icon.className = 'log-ico';
+    icon.setAttribute('aria-hidden', 'true');
+
+    const text = document.createElement('div');
+    text.className = 'log-text';
+    text.textContent = Array.from(args).map(String).join(' ');
+
+    line.appendChild(icon);
+    line.appendChild(text);
+    ui.logArea.appendChild(line);
+    if (ui.autoScroll.checked) line.scrollIntoView(false);
   }
 
   function setupCoreHooks() {
