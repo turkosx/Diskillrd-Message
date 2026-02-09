@@ -1156,6 +1156,16 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
   const wait = async ms => new Promise(done => setTimeout(done, ms));
   const msToHMS = s => `${s / 3.6e6 | 0}h ${(s % 3.6e6) / 6e4 | 0}m ${(s % 6e4) / 1000 | 0}s`;
   const escapeHTML = html => String(html).replace(/[&<"']/g, m => ({ '&': '&amp;', '<': '&lt;', '"': '&quot;', '\'': '&#039;' })[m]);
+  const allowLogMarkup = html => {
+    const escaped = escapeHTML(html);
+    return escaped
+      .replace(/&lt;(\/?)(b|i|sup|sub|x)&gt;/gi, '<$1$2>')
+      .replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+  };
+  const formatLogArg = (o) =>
+    typeof o === 'object'
+      ? escapeHTML(JSON.stringify(o, o instanceof Error && Object.getOwnPropertyNames(o)))
+      : allowLogMarkup(o);
   const redact = str => `<x>${escapeHTML(str)}</x>`;
   const queryString = params => params.filter(p => p[1] !== undefined).map(p => p[0] + '=' + encodeURIComponent(p[1])).join('&');
   const ask = async msg => new Promise(resolve => setTimeout(() => resolve(window.confirm(msg)), 10));
@@ -2136,11 +2146,9 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
     const icon = getLogIcon(safeType);
     ui.logArea.insertAdjacentHTML(
       'beforeend',
-      `<div class="log log-${safeType}">${icon}<div class="log-text">${Array.from(args).map(o =>
-        typeof o === 'object'
-          ? escapeHTML(JSON.stringify(o, o instanceof Error && Object.getOwnPropertyNames(o)))
-          : escapeHTML(o)
-      ).join('\t')}</div></div>`
+      `<div class="log log-${safeType}">${icon}<div class="log-text">${Array.from(args)
+        .map(formatLogArg)
+        .join('\t')}</div></div>`
     );
     if (ui.autoScroll.checked) ui.logArea.querySelector('div:last-child').scrollIntoView(false);
     if (type === 'error') console.error(PREFIX, ...Array.from(args));
