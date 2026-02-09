@@ -5,6 +5,7 @@
   "description": "Apaga somente suas mensagens em um canal ou DM no Discord (exclusao em massa).",
   "action": {
     "default_title": "Diskill Message",
+    "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png",
@@ -12,6 +13,7 @@
       "128": "icons/icon128.png"
     }
   },
+  "permissions": ["activeTab"],
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
@@ -26,15 +28,15 @@
       ],
       "js": ["content.js"],
       "run_at": "document_idle"
-    }
-  ],
-  "web_accessible_resources": [
+    },
     {
-      "resources": ["page.js"],
       "matches": [
         "https://discord.com/*",
         "https://*.discord.com/*"
-      ]
+      ],
+      "js": ["page.js"],
+      "run_at": "document_idle",
+      "world": "MAIN"
     }
   ]
 }

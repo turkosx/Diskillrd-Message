@@ -1,12 +1,10 @@
 ﻿(() => {
-  const scriptId = 'diskill-message-page';
-  if (document.getElementById(scriptId)) return;
+  const EXT_SOURCE = 'diskill-message-extension';
+  const TOGGLE = 'DISKILL_TOGGLE_PANEL';
 
-  const script = document.createElement('script');
-  script.id = scriptId;
-  script.src = chrome.runtime.getURL('page.js');
-  script.type = 'text/javascript';
-  script.onload = () => script.remove();
-
-  (document.head || document.documentElement).appendChild(script);
+  chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+    if (!message || message.type !== TOGGLE) return;
+    window.postMessage({ source: EXT_SOURCE, type: TOGGLE }, '*');
+    sendResponse({ ok: true });
+  });
 })();

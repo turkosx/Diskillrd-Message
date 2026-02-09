@@ -1,6 +1,8 @@
 ﻿
 (function () {
   'use strict';
+  if (window.__diskillMessageLoaded) return;
+  window.__diskillMessageLoaded = true;
 
   const VERSION = "1.0.0";
   const BRAND_NAME = "Diskill Message";
@@ -8,13 +10,13 @@
 
   // links
   const HOME = 'https://github.com/turkosx/Diskillrd-Message';
-  const DOCS = HOME + '#'; // vocÃª pode criar Ã¢ncoras no README depois (ex: #como-usar)
+  const DOCS = HOME + '#'; // você pode criar âncoras no README depois (ex: #como-usar)
 
   // ===================== UI (INSPIRADA NO MODELO) =====================
-  // MudanÃ§as aqui: apenas CSS/HTML (IDs mantidos)
+  // Mudanças aqui: apenas CSS/HTML (IDs mantidos)
   var themeCss = (`
 /* ==========================================================
-   Diskill Message UI â€” Light / Red (polido)
+   Diskill Message UI — Light / Red (polido)
    ========================================================== */
 #undiscord{
   /* Tokens (clean + vermelho) */
@@ -108,7 +110,7 @@
   font-weight: 600;
   letter-spacing: .15px;
 
-  /* tÃ­tulo com gradiente (como o modelo) */
+  /* título com gradiente (como o modelo) */
   background: linear-gradient(90deg, var(--dm-primary-from), var(--dm-primary-to));
   -webkit-background-clip: text;
   background-clip: text;
@@ -209,11 +211,11 @@
 }
 #undiscord summary::-webkit-details-marker{ display:none; }
 #undiscord summary::after{
-  content: 'â–¾';
+  content: '▾';
   color: var(--dm-primary);
   font-weight: 600;
 }
-#undiscord details[open] summary::after{ content: 'â–´'; }
+#undiscord details[open] summary::after{ content: '▴'; }
 
 #undiscord fieldset{
   border: none;
@@ -607,18 +609,21 @@
 }
 
 /* Streamer (redact) */
-#undiscord.redact .priv{ display:none !important; }
-#undiscord.redact x:not(:active){
+#undiscord.redact .priv{
   color: transparent !important;
   background-color: rgba(17,24,39,.08) !important;
   border-radius: 8px;
   cursor: default;
   user-select: none;
 }
+#undiscord.redact .priv::selection{
+  color: transparent !important;
+  background-color: rgba(17,24,39,.12) !important;
+}
 #undiscord.redact [priv]{ -webkit-text-security: disc !important; }
 `);
 
-  // BotÃ£o de toolbar (no Discord)
+  // Botão de toolbar (no Discord)
   var mainCss = (`
 #undicord-btn {
   position: relative;
@@ -673,9 +678,9 @@
 [name="grab-bl"] { bottom: 0px; left: 0px; width: var(--corner-size); height: var(--corner-size); margin-bottom: var(--offset); margin-left: var(--offset); cursor: nesw-resize; }
 `);
 
-  // Ãcone do botÃ£o no Discord (lixeira estilizada)
+  // Ícone do botão no Discord (lixeira estilizada)
   var buttonHtml = (`
-<div id="undicord-btn" tabindex="0" role="button" aria-label="Diskill Message" title="Diskill Message â€¢ Apagar suas mensagens">
+<div id="undicord-btn" tabindex="0" role="button" aria-label="Diskill Message" title="Diskill Message • Apagar suas mensagens">
   <svg aria-hidden="false" width="22" height="22" viewBox="0 0 24 24">
     <path fill="currentColor" d="M15 3.999V2H9V3.999H3V5.999H21V3.999H15Z"></path>
     <path fill="currentColor" d="M5 6.99902V18.999C5 20.101 5.897 20.999 7 20.999H17C18.103 20.999 19 20.101 19 18.999V6.99902H5ZM11 17H9V11H11V17ZM15 17H13V11H15V17Z"></path>
@@ -684,7 +689,7 @@
 </div>
 `);
 
-  // Template da janela â€” IDs essenciais mantidos
+  // Template da janela — IDs essenciais mantidos
   var undiscordTemplate = (`
 <div id="undiscord" class="browser container redact" style="display:none;">
   <div class="header">
@@ -696,7 +701,7 @@
 
     <div class="col" style="display:flex; flex-direction:column; gap:2px;">
       <h3>${BRAND_NAME}</h3>
-      <div class="subtitle">ExclusÃ£o em massa de mensagens</div>
+      <div class="subtitle">Exclusão em massa de mensagens</div>
     </div>
 
     <div class="spacer"></div>
@@ -724,7 +729,7 @@
         </summary>
         <fieldset>
           <legend>
-            <span>ID do usuÃ¡rio</span>
+            <span>ID do usuário</span>
             <a href="{{DOCS}}" title="Como obter" target="_blank" rel="noopener noreferrer">como obter</a>
           </legend>
 
@@ -760,7 +765,7 @@
           </legend>
           <div class="multiInput">
             <div class="input-wrapper">
-              <input id="channelId" type="text" priv placeholder="Ex: 123... (ou vÃ¡rios separados por vÃ­rgula)">
+              <input id="channelId" type="text" priv placeholder="Ex: 123... (ou vários separados por vírgula)">
             </div>
             <button id="getChannel" class="btn-outline">canal</button>
           </div>
@@ -795,7 +800,7 @@
           </div>
 
           <div class="sectionDescription">
-            ApÃ³s solicitar seus dados ao Discord, importe o arquivo <b>messages/index.json</b>.
+            Após solicitar seus dados ao Discord, importe o arquivo <b>messages/index.json</b>.
           </div>
         </fieldset>
       </details>
@@ -816,7 +821,7 @@
           </legend>
 
           <div class="input-wrapper">
-            <input id="search" type="text" placeholder="Texto contÃ©m" priv>
+            <input id="search" type="text" placeholder="Texto contém" priv>
           </div>
 
           <div class="sectionDescription">Apaga apenas mensagens que contenham o texto informado.</div>
@@ -825,7 +830,7 @@
             <label class="toggle">
               <input id="hasLink" type="checkbox">
               <span class="toggle-ui" aria-hidden="true"></span>
-              <span>ContÃ©m link</span>
+              <span>Contém link</span>
             </label>
           </div>
 
@@ -833,7 +838,7 @@
             <label class="toggle">
               <input id="hasFile" type="checkbox">
               <span class="toggle-ui" aria-hidden="true"></span>
-              <span>ContÃ©m arquivo</span>
+              <span>Contém arquivo</span>
             </label>
           </div>
 
@@ -853,7 +858,7 @@
           </legend>
 
           <div class="sectionDescription">
-            Apaga mensagens que combinem com a expressÃ£o regular informada.
+            Apaga mensagens que combinem com a expressão regular informada.
           </div>
 
           <div class="input-wrapper">
@@ -912,7 +917,7 @@
           </div>
 
           <div class="sectionDescription">
-            Obs.: o filtro por data nÃ£o funciona se vocÃª usar intervalo por mensagem.
+            Obs.: o filtro por data não funciona se você usar intervalo por mensagem.
           </div>
         </fieldset>
       </details>
@@ -923,7 +928,7 @@
             <svg class="ui-ico summary-ico" viewBox="0 0 24 24" aria-hidden="true">
               <path fill="currentColor" d="M4 6h9v2H4V6zm0 5h16v2H4v-2zm0 5h11v2H4v-2zm12-11h4v4h-4V5zm4 10h-4v4h4v-4z"/>
             </svg>
-            AvanÃ§ado
+            Avançado
           </span>
         </summary>
 
@@ -941,7 +946,7 @@
 
         <fieldset>
           <legend>
-            <span>Atraso entre exclusÃµes</span>
+            <span>Atraso entre exclusões</span>
             <a href="{{DOCS}}" title="Como obter" target="_blank" rel="noopener noreferrer">como obter</a>
           </legend>
 
@@ -957,7 +962,7 @@
 
         <fieldset>
           <legend>
-            <span>Token de autorizaÃ§Ã£o</span>
+            <span>Token de autorização</span>
             <a href="{{DOCS}}" title="Como obter" target="_blank" rel="noopener noreferrer">como obter</a>
           </legend>
 
@@ -970,7 +975,7 @@
         </fieldset>
 
         <div class="sectionDescription" style="margin-top:12px;">
-          VersÃ£o: <b>${VERSION}</b> â€¢ GitHub: <a href="${HOME}" target="_blank" rel="noopener noreferrer">turkosx</a>
+          Versão: <b>${VERSION}</b> • GitHub: <a href="${HOME}" target="_blank" rel="noopener noreferrer">turkosx</a>
         </div>
       </details>
 
@@ -985,7 +990,7 @@
             </svg>
           </button>
 
-          <button id="start" class="btn-primary" style="min-width: 170px;" title="Iniciar exclusÃ£o">
+          <button id="start" class="btn-primary" style="min-width: 170px;" title="Iniciar exclusão">
             <svg class="ui-ico" viewBox="0 0 24 24" aria-hidden="true">
               <path fill="currentColor" d="M9 3h6v2H9V3zm-4 2h14v2H5V5zm2 4h10l-1 12H8L7 9zm4 2v8h2v-8h-2z"/>
             </svg>
@@ -1009,16 +1014,16 @@
           <span class="spacer"></span>
 
           <div class="toggle-group">
-            <label class="toggle toggle--compact" title="Ocultar informaÃ§Ãµes sensÃ­veis para prints ou stream">
+            <label class="toggle toggle--compact" title="Ocultar informações sensíveis para prints ou stream">
               <input id="redact" type="checkbox" checked>
               <span class="toggle-ui" aria-hidden="true"></span>
               <span>Modo streamer</span>
             </label>
 
-            <label class="toggle toggle--compact" title="Rolar o log automaticamente durante a execuÃ§Ã£o">
+            <label class="toggle toggle--compact" title="Rolar o log automaticamente durante a execução">
               <input id="autoScroll" type="checkbox" checked>
               <span class="toggle-ui" aria-hidden="true"></span>
-              <span>Rolagem automÃ¡tica</span>
+              <span>Rolagem automática</span>
             </label>
           </div>
         </div>
@@ -1026,16 +1031,16 @@
         <progress id="progressBar" style="display:none;"></progress>
       </div>
 
-      <pre id="logArea" class="logarea scroll">
+      <div id="logArea" class="logarea scroll">
 <div class="dmNotice">
 ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revise filtros e intervalos antes de iniciar.
 </div>
 
 <div class="dmCenter">
   <div class="repo">Repo: <a href="${HOME}" target="_blank" rel="noopener noreferrer">Diskillrd-Message</a></div>
-  <div class="hint">Se ocorrer rate limit, aumente os atrasos no painel AvanÃ§ado.</div>
+  <div class="hint">Se ocorrer rate limit, aumente os atrasos no painel Avançado.</div>
 </div>
-      </pre>
+      </div>
 
       <div class="footer row">
         <div id="progressPercent"></div>
@@ -1097,7 +1102,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
     t = normalizeToken(t);
     if (!t) return '(vazio)';
     if (t.length <= 12) return '(**curto demais**)';
-    return `${t.slice(0, 6)}â€¦${t.slice(-4)} (len=${t.length})`;
+    return `${t.slice(0, 6)}…${t.slice(-4)} (len=${t.length})`;
   };
 
   const hardenInputsAgainstAutofill = (root) => {
@@ -1138,14 +1143,24 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
   const allowLogMarkup = html => {
     const escaped = escapeHTML(html);
     return escaped
-      .replace(/&lt;(\/?)(b|i|sup|sub|x)&gt;/gi, '<$1$2>')
-      .replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+      .replace(/&lt;br\s*\/?&gt;/gi, '<br>')
+      .replace(/&lt;(\/?)\s*(b|i|sup|sub)\s*&gt;/gi, '<$1$2>')
+      .replace(/&lt;span class=&quot;priv&quot;&gt;/gi, '<span class="priv">')
+      .replace(/&lt;\/span&gt;/gi, '</span>');
   };
-  const formatLogArg = (o) =>
-    typeof o === 'object'
-      ? escapeHTML(JSON.stringify(o, o instanceof Error && Object.getOwnPropertyNames(o)))
-      : allowLogMarkup(o);
-  const redact = str => `<x>${escapeHTML(str)}</x>`;
+  const isRedactMode = () => !!(ui.window && ui.window.classList.contains('redact'));
+  const formatLogArg = (o) => {
+    if (o instanceof Error) {
+      if (isRedactMode()) return redact('[erro]');
+      return escapeHTML(o.stack || o.message || String(o));
+    }
+    if (typeof o === 'object') {
+      if (isRedactMode()) return redact('[objeto]');
+      return escapeHTML(JSON.stringify(o, o instanceof Error && Object.getOwnPropertyNames(o)));
+    }
+    return allowLogMarkup(o);
+  };
+  const redact = str => `<span class="priv">${escapeHTML(str)}</span>`;
   const queryString = params => params.filter(p => p[1] !== undefined).map(p => p[0] + '=' + encodeURIComponent(p[1])).join('&');
   const ask = async msg => new Promise(resolve => setTimeout(() => resolve(window.confirm(msg)), 10));
   const toSnowflake = (date) => /:/.test(date) ? ((new Date(date).getTime() - 1420070400000) * Math.pow(2, 22)) : date;
@@ -1231,7 +1246,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
     }
 
     async runBatch(queue) {
-      if (this.state.running) return log.error('JÃ¡ estÃ¡ rodando!');
+      if (this.state.running) return log.error('Já está rodando!');
       log.info(`Rodando lote com ${queue.length} tarefas`);
 
       for (let i = 0; i < queue.length; i++) {
@@ -1254,7 +1269,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
     }
 
     async run(isJob = false) {
-      if (this.state.running && !isJob) return log.error('JÃ¡ estÃ¡ rodando!');
+      if (this.state.running && !isJob) return log.error('Já está rodando!');
 
       this.state.running = true;
       this.stats.startTime = new Date();
@@ -1281,7 +1296,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
 
         log.verb(
           `Total geral: ${this.state.grandTotal}`,
-          `(Nesta pÃ¡gina: ${this.state._seachResponse.messages.length}`,
+          `(Nesta página: ${this.state._seachResponse.messages.length}`,
           `Para apagar: ${this.state._messagesToDelete.length}`,
           `Puladas: ${this.state._skippedMessages.length})`,
           `offset: ${this.state.offset}`
@@ -1292,21 +1307,21 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
         log.verb(`Tempo estimado restante: ${msToHMS(this.stats.etr)}`);
 
         if (this.state._messagesToDelete.length > 0) {
-          // confirmaÃ§Ã£o desativada: segue direto pro delete
+          // confirmação desativada: segue direto pro delete
           await this.deleteMessagesFromList();
         } else if (this.state._skippedMessages.length > 0) {
           const oldOffset = this.state.offset;
           this.state.offset += this.state._skippedMessages.length;
-          log.verb('Nada para apagar nesta pÃ¡gina. Indo para a prÃ³xima...');
+          log.verb('Nada para apagar nesta página. Indo para a próxima...');
           log.verb(`Puladas ${this.state._skippedMessages.length} de ${this.state._seachResponse.messages.length}.`, `(Offset era ${oldOffset}, ajustado para ${this.state.offset})`);
         } else {
-          log.verb('Finalizado: a API retornou pÃ¡gina vazia.');
+          log.verb('Finalizado: a API retornou página vazia.');
           log.verb('[Estado final]', this.state);
           if (isJob) break;
           this.state.running = false;
         }
 
-        log.verb(`Aguardando ${(this.options.searchDelay / 1000).toFixed(2)}s antes da prÃ³xima pÃ¡gina...`);
+        log.verb(`Aguardando ${(this.options.searchDelay / 1000).toFixed(2)}s antes da próxima página...`);
         await wait(this.options.searchDelay);
 
       } while (this.state.running);
@@ -1331,7 +1346,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
     }
 
     async confirm() {
-      // ConfirmaÃ§Ã£o/preview desativados: nÃ£o abre mais window.confirm
+      // Confirmação/preview desativados: não abre mais window.confirm
       this.options.askForConfirmation = false;
       return true;
     }
@@ -1345,7 +1360,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
       try {
         this.beforeRequest();
         resp = await fetch(API_SEARCH_URL + 'search?' + queryString([
-          // ðŸ”’ sempre author_id (evita puxar msg de terceiros)
+          // 🔒 sempre author_id (evita puxar msg de terceiros)
           ['author_id', this.options.authorId || undefined],
           ['channel_id', (this.options.guildId !== '@me' ? this.options.channelId : undefined) || undefined],
           ['min_id', this.options.minId ? toSnowflake(this.options.minId) : undefined],
@@ -1363,7 +1378,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
         this.afterRequest();
       } catch (err) {
         this.state.running = false;
-        log.error('A requisiÃ§Ã£o de busca falhou:', err);
+        log.error('A requisição de busca falhou:', err);
         throw err;
       }
 
@@ -1372,7 +1387,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
         w = w || this.stats.searchDelay;
         this.stats.throttledCount++;
         this.stats.throttledTotalTime += w;
-        log.warn(`Este canal ainda nÃ£o foi indexado. Aguardando ${w}ms...`);
+        log.warn(`Este canal ainda não foi indexado. Aguardando ${w}ms...`);
         await wait(w);
         return await this.search();
       }
@@ -1415,11 +1430,11 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
 
       let messagesToDelete = discoveredMessages;
 
-      // Apenas tipos deletÃ¡veis
+      // Apenas tipos deletáveis
       messagesToDelete = messagesToDelete.filter(msg => msg.type === 0 || (msg.type >= 6 && msg.type <= 21));
       messagesToDelete = messagesToDelete.filter(msg => msg.pinned ? this.options.includePinned : true);
 
-      // âœ… FAILSAFE: nunca tenta apagar msg que nÃ£o Ã© sua
+      // ✅ FAILSAFE: nunca tenta apagar msg que não é sua
       if (this.options.authorId) {
         messagesToDelete = messagesToDelete.filter(msg => msg?.author?.id === this.options.authorId);
       } else {
@@ -1431,7 +1446,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
         const regex = new RegExp(this.options.pattern, 'i');
         messagesToDelete = messagesToDelete.filter(msg => regex.test(msg.content));
       } catch (e) {
-        // pattern vazio ou invÃ¡lido = ignora
+        // pattern vazio ou inválido = ignora
       }
 
       const skippedMessages = discoveredMessages.filter(msg => !messagesToDelete.find(m => m.id === msg.id));
@@ -1443,21 +1458,28 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
     async deleteMessagesFromList() {
       for (let i = 0; i < this.state._messagesToDelete.length; i++) {
         const message = this.state._messagesToDelete[i];
-        if (!this.state.running) return log.error('Parado por vocÃª!');
+        if (!this.state.running) return log.error('Parado por você!');
 
         // failsafe extra
         if (this.options.authorId && message?.author?.id !== this.options.authorId) {
-          log.warn('Pulando mensagem (nÃ£o Ã© sua).');
+          log.warn('Pulando mensagem (não é sua).');
           this.state.offset++;
           continue;
         }
+
+        const content = message.content
+          ? redact(message.content).replace(/\n/g, '↵')
+          : redact('[sem texto]');
+        const attachmentsInfo = message.attachments?.length
+          ? ` ${redact(`[${message.attachments.length} anexo(s)]`)}`
+          : '';
 
         log.debug(
           `[${this.state.delCount + 1}/${this.state.grandTotal}] ` +
           `<sup>${new Date(message.timestamp).toLocaleString()}</sup> ` +
           `<b>${redact(message.author.username + '#' + message.author.discriminator)}</b>` +
-          `: <i>${redact(message.content).replace(/\n/g, 'â†µ')}</i>` +
-          (message.attachments.length ? redact(JSON.stringify(message.attachments)) : ''),
+          `: <i>${content}</i>` +
+          attachmentsInfo,
           `<sup>{ID:${redact(message.id)}}</sup>`
         );
 
@@ -1491,7 +1513,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
         });
         this.afterRequest();
       } catch (err) {
-        log.error('Erro na requisiÃ§Ã£o de exclusÃ£o:', err);
+        log.error('Erro na requisição de exclusão:', err);
         this.state.failCount++;
         return 'FAILED';
       }
@@ -1502,16 +1524,16 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
           this.stats.throttledCount++;
           this.stats.throttledTotalTime += w;
           this.options.deleteDelay = w;
-          log.warn(`Rate limit ao apagar (${w}ms). Ajustando atraso da exclusÃ£o para ${this.options.deleteDelay}ms.`);
+          log.warn(`Rate limit ao apagar (${w}ms). Ajustando atraso da exclusão para ${this.options.deleteDelay}ms.`);
           this.printStats();
           log.verb(`Resfriando por ${w * 2}ms antes de tentar novamente...`);
           await wait(w * 2);
           return 'RETRY';
         }
 
-        // âœ… evita travar: se nÃ£o pode apagar (404/403), pula
+        // ✅ evita travar: se não pode apagar (404/403), pula
         if (resp.status === 404 || resp.status === 403) {
-          log.warn(`NÃ£o foi possÃ­vel apagar (HTTP ${resp.status}). Pulando esta mensagem.`);
+          log.warn(`Não foi possível apagar (HTTP ${resp.status}). Pulando esta mensagem.`);
           this.state.offset++;
           this.state.failCount++;
           return 'FAIL_SKIP';
@@ -1522,7 +1544,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
           const r = JSON.parse(body);
 
           if (resp.status === 400 && r.code === 50083) {
-            log.warn('NÃ£o foi possÃ­vel apagar (thread arquivada). Pulando.');
+            log.warn('Não foi possível apagar (thread arquivada). Pulando.');
             this.state.offset++;
             this.state.failCount++;
             return 'FAIL_SKIP';
@@ -1553,8 +1575,8 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
 
     printStats() {
       log.verb(
-        `Atraso exclusÃ£o: ${this.options.deleteDelay}ms, Atraso busca: ${this.options.searchDelay}ms`,
-        `Ping: ${this.stats.lastPing}ms, MÃ©dia: ${this.stats.avgPing | 0}ms`,
+        `Atraso exclusão: ${this.options.deleteDelay}ms, Atraso busca: ${this.options.searchDelay}ms`,
+        `Ping: ${this.stats.lastPing}ms, Média: ${this.stats.avgPing | 0}ms`,
       );
       log.verb(
         `Rate limited: ${this.stats.throttledCount}x.`,
@@ -1767,7 +1789,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
   }
 
   // ======================= MESSAGE PICKER =======================
-  // (UI ajustada pro mesmo tema, sem alterar a lÃ³gica)
+  // (UI ajustada pro mesmo tema, sem alterar a lógica)
   const messagePickerCss = `
 body.undiscord-pick-message [data-list-id="chat-messages"] {
   background-color: rgba(255,59,59,.06) !important;
@@ -1835,7 +1857,7 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
     try {
       return JSON.parse(LS.token);
     } catch {
-      log.info('NÃ£o foi possÃ­vel detectar o token no localStorage automaticamente.');
+      log.info('Não foi possível detectar o token no localStorage automaticamente.');
       log.info('Tentando capturar token via webpack...');
       return (window.webpackChunkdiscord_app.push([[''], {}, e => { window.m = []; for (let c in e.c) window.m.push(e.c[c]); }]), window.m)
         .find(m => m?.exports?.default?.getToken !== void 0)
@@ -1851,27 +1873,27 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
   function getGuildId() {
     const m = location.href.match(/channels\/([\w@]+)\/(\d+)/);
     if (m) return m[1];
-    else alert('NÃ£o foi possÃ­vel encontrar o ID do servidor!\nConfirme se vocÃª estÃ¡ em um servidor ou DM.');
+    else alert('Não foi possível encontrar o ID do servidor!\nConfirme se você está em um servidor ou DM.');
   }
 
   function getChannelId() {
     const m = location.href.match(/channels\/([\w@]+)\/(\d+)/);
     if (m) return m[2];
-    else alert('NÃ£o foi possÃ­vel encontrar o ID do canal!\nConfirme se vocÃª estÃ¡ em um canal ou DM.');
+    else alert('Não foi possível encontrar o ID do canal!\nConfirme se você está em um canal ou DM.');
   }
 
   function fillToken() {
     try {
       const t = normalizeToken(getToken());
       if (!looksLikeDiscordToken(t)) {
-        log.error('Token nÃ£o parece vÃ¡lido. PossÃ­vel autofill do navegador (senha/email caindo aqui).');
+        log.error('Token não parece válido. Possível autofill do navegador (senha/email caindo aqui).');
         log.info('Dica: desative/remova senha salva do Discord no navegador (isso costuma quebrar o script).');
         log.info('Token detectado:', maskToken(t));
         return '';
       }
       return t;
     } catch (err) {
-      log.error('NÃ£o consegui detectar automaticamente o Token.');
+      log.error('Não consegui detectar automaticamente o Token.');
       log.info('Dica: pode ser autofill do gerenciador de senhas preenchendo o campo errado.');
       return '';
     }
@@ -1892,6 +1914,29 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
 
   const $ = (s) => ui.window.querySelector(s);
 
+  const EXT_SOURCE = 'diskill-message-extension';
+  const TOGGLE = 'DISKILL_TOGGLE_PANEL';
+  let pendingToggle = false;
+
+  function toggleWindow() {
+    if (!ui.window) return;
+    if (ui.window.style.display !== 'none') ui.window.style.display = 'none';
+    else ui.window.style.display = '';
+  }
+
+  function toggleWindowExternal() {
+    if (ui.window) toggleWindow();
+    else pendingToggle = true;
+  }
+
+  window.addEventListener('message', (event) => {
+    if (event.source !== window) return;
+    const data = event.data || {};
+    if (data.source === EXT_SOURCE && data.type === TOGGLE) {
+      toggleWindowExternal();
+    }
+  });
+
   function initUI() {
     insertCss(themeCss);
     insertCss(mainCss);
@@ -1900,13 +1945,17 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
     const html = replaceInterpolations(undiscordTemplate, { DOCS });
     ui.window = createElm(html);
     document.body.appendChild(ui.window);
+    if (pendingToggle) {
+      pendingToggle = false;
+      toggleWindow();
+    }
 
     // Anti-autofill
     hardenInputsAgainstAutofill(ui.window);
 
     new DragResize({ elm: ui.window, moveHandle: $('.header') });
 
-    // BotÃ£o no Discord
+    // Botão no Discord
     ui.btn = createElm(buttonHtml);
     ui.btn.addEventListener('click', toggleWindow);
 
@@ -1963,7 +2012,7 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
         if (best) return best;
       }
 
-      // fallback: mais alto e Ã  direita
+      // fallback: mais alto e à direita
       let best = null;
       let bestScore = -Infinity;
       for (const el of toolbars) {
@@ -2026,14 +2075,6 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
     }
     attachObserver();
 
-    function toggleWindow() {
-      if (ui.window.style.display !== 'none') {
-        ui.window.style.display = 'none';
-      } else {
-        ui.window.style.display = '';
-      }
-    }
-
     ui.logArea = $('#logArea');
     ui.autoScroll = $('#autoScroll');
     ui.progressMain = $('#progressBar');
@@ -2059,11 +2100,11 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
 
     $('#redact').onchange = () => {
       const b = ui.window.classList.toggle('redact');
-      if (b) alert('Modo streamer ativado.\nConfira se nÃ£o ficou nada sensÃ­vel na tela.');
+      if (b) alert('Modo streamer ativado.\nConfira se não ficou nada sensível na tela.');
     };
 
     $('#pickMessageAfter').onclick = async () => {
-      alert('Selecione uma mensagem no chat.\nA mensagem abaixo dela serÃ¡ apagada.');
+      alert('Selecione uma mensagem no chat.\nA mensagem abaixo dela será apagada.');
       toggleWindow();
       const id = await messagePicker.grab('after');
       if (id) $('input#minId').value = id;
@@ -2071,7 +2112,7 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
     };
 
     $('#pickMessageBefore').onclick = async () => {
-      alert('Selecione uma mensagem no chat.\nA mensagem acima dela serÃ¡ apagada.');
+      alert('Selecione uma mensagem no chat.\nA mensagem acima dela será apagada.');
       toggleWindow();
       const id = await messagePicker.grab('before');
       if (id) $('input#maxId').value = id;
@@ -2151,7 +2192,7 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
       const percent = value >= 0 && max ? Math.round(value / max * 100) + '%' : '';
       const elapsed = msToHMS(Date.now() - stats.startTime.getTime());
       const remaining = msToHMS(stats.etr);
-      ui.percent.innerHTML = `${percent} (${value}/${max}) â€¢ Decorrido: ${elapsed} â€¢ Restante: ${remaining}`;
+      ui.percent.innerHTML = `${percent} (${value}/${max}) • Decorrido: ${elapsed} • Restante: ${remaining}`;
 
       ui.progressIcon.value = value;
       ui.progressMain.value = value;
@@ -2188,12 +2229,12 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
   async function startAction() {
     console.log(PREFIX, 'startAction');
 
-    // ðŸ”’ ForÃ§a authorId = seu usuÃ¡rio se estiver vazio (evita 404 por msg de terceiros)
+    // 🔒 Força authorId = seu usuário se estiver vazio (evita 404 por msg de terceiros)
     let authorId = $('input#authorId').value.trim();
     if (!authorId) {
       authorId = String(getAuthorId()).trim();
       $('input#authorId').value = authorId;
-      log.info('Author ID estava vazio â€” usando automaticamente o seu ID.');
+      log.info('Author ID estava vazio — usando automaticamente o seu ID.');
     }
 
     const guildId = $('input#guildId').value.trim();
@@ -2228,8 +2269,8 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
     }
 
     if (!looksLikeDiscordToken(authToken)) {
-      log.error('Token invÃ¡lido/ausente â€” a API vai retornar 401.');
-      log.info('Isso geralmente Ã© autofill do navegador colocando senha no campo do token.');
+      log.error('Token inválido/ausente — a API vai retornar 401.');
+      log.info('Isso geralmente é autofill do navegador colocando senha no campo do token.');
       log.info('Token atual:', maskToken(authToken));
       return;
     }
