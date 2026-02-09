@@ -5,11 +5,12 @@
 <h1 align="center">Diskill Message</h1>
 
 <p align="center">
-  Apaga somente suas mensagens em um canal ou DM no Discord (exclusao em massa) via Tampermonkey.
+  Apaga somente suas mensagens em um canal ou DM no Discord (exclusao em massa) via extensao ou Tampermonkey.
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Userscript-Tampermonkey-ff3b3b?style=flat-square&logo=tampermonkey&logoColor=ffffff&labelColor=0b0f14" alt="Tampermonkey" />
+  <img src="https://img.shields.io/badge/Extensao-Chrome%2FEdge%2FBrave-ff3b3b?style=flat-square&logo=googlechrome&logoColor=ffffff&labelColor=0b0f14" alt="Extensao" />
   <img src="https://img.shields.io/badge/JavaScript-ES2020-ff3b3b?style=flat-square&logo=javascript&logoColor=ffffff&labelColor=0b0f14" alt="JavaScript" />
   <img src="https://img.shields.io/badge/Discord-Web-ff3b3b?style=flat-square&logo=discord&logoColor=ffffff&labelColor=0b0f14" alt="Discord" />
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-ff3b3b?style=flat-square&labelColor=0b0f14" alt="License MIT" /></a>
@@ -82,21 +83,24 @@
 - <img src="https://api.iconify.design/mdi:view-dashboard-outline.svg?color=%23ff3b3b" height="14" alt="" /> Interface dedicada com seletores de canal, filtros e intervalos.
 - <img src="https://api.iconify.design/mdi:database-import-outline.svg?color=%23ff3b3b" height="14" alt="" /> Importacao opcional do export do Discord (`messages/index.json`).
 - <img src="https://api.iconify.design/mdi:speedometer.svg?color=%23ff3b3b" height="14" alt="" /> Controles de atraso para reduzir risco de rate limit.
+- <img src="https://api.iconify.design/mdi:puzzle-outline.svg?color=%23ff3b3b" height="14" alt="" /> Disponivel como extensao de navegador e userscript Tampermonkey.
 
 ## Requisitos
-- <img src="https://cdn.simpleicons.org/tampermonkey/ff3b3b" height="14" alt="" /> Tampermonkey instalado no navegador.
-- <img src="https://cdn.simpleicons.org/googlechrome/ff3b3b" height="14" alt="" /> Navegador baseado em Chromium (Chrome, Edge, Brave) ou Firefox.
+- <img src="https://cdn.simpleicons.org/googlechrome/ff3b3b" height="14" alt="" /> Extensao carregada (Chrome, Edge, Brave) ou Tampermonkey instalado.
+- <img src="https://cdn.simpleicons.org/googlechrome/ff3b3b" height="14" alt="" /> Navegador baseado em Chromium (Chrome, Edge, Brave) ou Firefox (para Tampermonkey).
 - <img src="https://cdn.simpleicons.org/discord/ff3b3b" height="14" alt="" /> Discord Web aberto no navegador.
 
 ## Instalacao rapida
-- <img src="https://api.iconify.design/mdi:download.svg?color=%23ff3b3b" height="14" alt="" /> Instale o Tampermonkey: https://www.tampermonkey.net/
-- <img src="https://api.iconify.design/mdi:code-tags.svg?color=%23ff3b3b" height="14" alt="" /> Instale ou atualize o script (RAW): https://raw.githubusercontent.com/turkosx/Diskillrd-Message/main/diskill-message.user.js
+- <img src="https://api.iconify.design/mdi:puzzle-outline.svg?color=%23ff3b3b" height="14" alt="" /> Extensao (Chrome/Edge/Brave): abra `chrome://extensions`, ative "Modo do desenvolvedor", clique em "Carregar sem compactacao" e selecione a pasta `extension`.
+- <img src="https://api.iconify.design/mdi:cursor-default-click.svg?color=%23ff3b3b" height="14" alt="" /> No Discord Web, clique no icone da extensao para abrir/fechar o painel.
+- <img src="https://api.iconify.design/mdi:download.svg?color=%23ff3b3b" height="14" alt="" /> Tampermonkey: instale o Tampermonkey: https://www.tampermonkey.net/
+- <img src="https://api.iconify.design/mdi:code-tags.svg?color=%23ff3b3b" height="14" alt="" /> Tampermonkey: instale ou atualize o script (RAW): https://raw.githubusercontent.com/turkosx/Diskillrd-Message/main/diskill-message.user.js
 - <img src="https://api.iconify.design/mdi:rocket-launch.svg?color=%23ff3b3b" height="14" alt="" /> Pagina de instalacao (recomendado): https://turkosx.github.io/Diskillrd-Message/
-- <img src="https://api.iconify.design/mdi:refresh.svg?color=%23ff3b3b" height="14" alt="" /> Para atualizar, use o menu do Tampermonkey e clique em "Procurar atualizacoes".
+- <img src="https://api.iconify.design/mdi:refresh.svg?color=%23ff3b3b" height="14" alt="" /> Tampermonkey: para atualizar, use o menu do Tampermonkey e clique em "Procurar atualizacoes".
 
 ## Uso rapido
 1. <img src="https://api.iconify.design/mdi:earth.svg?color=%23ff3b3b" height="14" alt="" /> Abra o Discord no navegador e va ao canal ou DM.
-2. <img src="https://api.iconify.design/mdi:trash-can-outline.svg?color=%23ff3b3b" height="14" alt="" /> Clique no icone de lixeira e abra o painel do Diskill Message.
+2. <img src="https://api.iconify.design/mdi:trash-can-outline.svg?color=%23ff3b3b" height="14" alt="" /> Clique no icone da extensao (ou na lixeira dentro do Discord se estiver usando Tampermonkey).
 3. <img src="https://api.iconify.design/mdi:form-textbox.svg?color=%23ff3b3b" height="14" alt="" /> Preencha Autor, Servidor e Canal (ou use os botoes de auto-preenchimento).
 4. <img src="https://api.iconify.design/mdi:play-outline.svg?color=%23ff3b3b" height="14" alt="" /> Clique em Apagar e acompanhe o log.
 5. <img src="https://api.iconify.design/mdi:timer-outline.svg?color=%23ff3b3b" height="14" alt="" /> Se ocorrer rate limit, aumente os atrasos nas configuracoes avancadas.
