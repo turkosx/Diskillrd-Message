@@ -83,6 +83,9 @@
 #undiscord { 
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
+#undiscord b, #undiscord strong{
+  font-weight: 500;
+}
 
 /* Window container */
 #undiscord.browser{
@@ -123,8 +126,8 @@
   margin: 0;
   font-size: 15px;
   line-height: 18px;
-  font-weight: 850;
-  letter-spacing: .2px;
+  font-weight: 600;
+  letter-spacing: .15px;
 
   /* título com gradiente (como o modelo) */
   background: linear-gradient(90deg, var(--dm-primary-from), var(--dm-primary-to));
@@ -136,7 +139,7 @@
 #undiscord .header .subtitle{
   margin-top: 2px;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--dm-muted);
   white-space: nowrap;
 
@@ -208,7 +211,7 @@
   list-style: none;
   cursor: pointer;
   padding: 12px 12px;
-  font-weight: 850;
+  font-weight: 600;
   font-size: 13px;
   color: var(--dm-text);
   background: linear-gradient(180deg, #ffffff, #f3f4f6);
@@ -217,6 +220,11 @@
   align-items: center;
   justify-content: space-between;
 }
+#undiscord summary .summary-inner{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
 #undiscord summary:hover{
   background: linear-gradient(180deg, #f9fafb, #f3f4f6);
 }
@@ -224,7 +232,7 @@
 #undiscord summary::after{
   content: '▾';
   color: var(--dm-primary);
-  font-weight: 900;
+  font-weight: 600;
 }
 #undiscord details[open] summary::after{ content: '▴'; }
 
@@ -237,7 +245,7 @@
 #undiscord legend{
   color: var(--dm-muted);
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: .7px;
   margin-bottom: 8px;
@@ -250,7 +258,7 @@
 #undiscord label{
   color: var(--dm-text);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: .2px;
   margin-bottom: 0;
   display: inline-flex;
@@ -264,7 +272,8 @@
   color: var(--dm-muted);
   font-size: 12px;
   line-height: 17px;
-  font-weight: 600;
+  font-weight: 500;
+  overflow-wrap: anywhere;
 }
 
 /* Inputs */
@@ -283,7 +292,7 @@
   background: #fff !important;
   color: var(--dm-text);
   font-size: 13px;
-  font-weight: 650;
+  font-weight: 500;
   outline: none;
   transition: box-shadow .12s ease, border-color .12s ease, background .12s ease;
 }
@@ -291,7 +300,7 @@
   padding: 8px 12px;
   height: auto;
 }
-#undiscord input::placeholder{ color: var(--dm-muted-2); font-weight: 650; }
+#undiscord input::placeholder{ color: var(--dm-muted-2); font-weight: 500; }
 #undiscord input:focus{
   border-color: rgba(255,59,59,.75) !important;
   box-shadow: 0 0 0 4px var(--dm-focus);
@@ -308,7 +317,7 @@
   user-select: none;
   color: var(--dm-text);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
 }
 #undiscord .toggle input{
   position: absolute;
@@ -394,16 +403,37 @@
   margin-top: 6px;
   font-size: 12px;
   color: var(--dm-muted);
-  font-weight: 750;
+  font-weight: 500;
 }
 
 /* Links */
 #undiscord a{
   color: var(--dm-primary);
   text-decoration: none;
-  font-weight: 850;
+  font-weight: 600;
 }
 #undiscord a:hover{ text-decoration: underline; }
+
+/* Icons */
+#undiscord .ui-ico{
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  flex: 0 0 auto;
+  color: currentColor;
+}
+#undiscord .summary-ico{
+  width: 14px;
+  height: 14px;
+  color: var(--dm-muted);
+}
+#undiscord details[open] summary .summary-ico{
+  color: var(--dm-primary);
+}
+#undiscord .btn-icon .ui-ico{
+  width: 18px;
+  height: 18px;
+}
 
 /* Buttons */
 #undiscord button{
@@ -411,8 +441,8 @@
   border-radius: 12px;
   padding: 0 14px;
   font-size: 13px;
-  font-weight: 900;
-  letter-spacing: .2px;
+  font-weight: 600;
+  letter-spacing: .15px;
   border: 1px solid transparent;
   cursor: pointer;
   user-select: none;
@@ -502,18 +532,49 @@
   overflow: auto;
   flex: 1;
   min-height: 0;
+  max-width: 100%;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 12px;
-  line-height: 16px;
+  line-height: 17px;
+  font-weight: 500;
   color: var(--dm-text);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
-#undiscord .log{ margin-bottom: 6px; }
-#undiscord .log-debug{ color: var(--dm-text); }
-#undiscord .log-verb{ color: var(--dm-muted); }
-#undiscord .log-info{ color: var(--dm-primary); font-weight: 850; }
-#undiscord .log-warn{ color: #f59e0b; font-weight: 900; }
-#undiscord .log-error{ color: #ef4444; font-weight: 950; }
-#undiscord .log-success{ color: var(--dm-success); font-weight: 950; }
+#undiscord .log{
+  margin-bottom: 8px;
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  align-items: start;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--dm-border);
+  background: #f9fafb;
+  color: var(--dm-text);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+#undiscord .log:last-child{ margin-bottom: 0; }
+#undiscord .log .log-text{
+  min-width: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+#undiscord .log-ico{
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+  opacity: .85;
+}
+#undiscord .log-debug{ color: #334155; background: #f8fafc; }
+#undiscord .log-verb{ color: #6b7280; background: #f8fafc; }
+#undiscord .log-info{ color: #b91c1c; background: #fff1f2; border-color: #fecdd3; }
+#undiscord .log-warn{ color: #92400e; background: #fffbeb; border-color: #fde68a; }
+#undiscord .log-error{ color: #991b1b; background: #fef2f2; border-color: #fecaca; }
+#undiscord .log-success{ color: #166534; background: #f0fdf4; border-color: #bbf7d0; }
 
 /* Notice inside log */
 #undiscord .dmNotice{
@@ -521,7 +582,7 @@
   border: 1px solid #fecdd3;
   border-radius: 16px;
   background: #fff1f2;
-  font-weight: 800;
+  font-weight: 600;
   color: #7f1d1d;
 }
 #undiscord .dmCenter{
@@ -529,11 +590,11 @@
   text-align: center;
 }
 #undiscord .dmCenter .repo{
-  font-weight: 950;
+  font-weight: 600;
 }
 #undiscord .dmCenter .hint{
   margin-top: 6px;
-  font-weight: 800;
+  font-weight: 500;
   color: var(--dm-muted);
 }
 
@@ -549,7 +610,7 @@
 #undiscord .footer #progressPercent{
   font-size: 12px;
   color: var(--dm-muted);
-  font-weight: 850;
+  font-weight: 500;
 }
 
 /* Resize handle */
@@ -674,7 +735,14 @@
     <div class="sidebar scroll">
 
       <details open>
-        <summary>Geral</summary>
+        <summary>
+          <span class="summary-inner">
+            <svg class="ui-ico summary-ico" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M4 5h7v7H4V5zm9 0h7v7h-7V5zM4 14h7v7H4v-7zm9 0h7v7h-7v-7z"/>
+            </svg>
+            Geral
+          </span>
+        </summary>
         <fieldset>
           <legend>
             <span>ID do usuário</span>
@@ -729,7 +797,14 @@
       </details>
 
       <details>
-        <summary>Importar arquivo do Discord</summary>
+        <summary>
+          <span class="summary-inner">
+            <svg class="ui-ico summary-ico" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M12 3l5 5h-3v6h-4V8H7l5-5zm-7 13h14v4H5v-4z"/>
+            </svg>
+            Importar arquivo do Discord
+          </span>
+        </summary>
         <fieldset>
           <legend>
             <span>Arquivo de mensagens (index.json)</span>
@@ -747,7 +822,14 @@
       </details>
 
       <details>
-        <summary>Filtros</summary>
+        <summary>
+          <span class="summary-inner">
+            <svg class="ui-ico summary-ico" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M3 5h18l-7 8v5l-4 2v-7L3 5z"/>
+            </svg>
+            Filtros
+          </span>
+        </summary>
         <fieldset>
           <legend>
             <span>Filtro por texto</span>
@@ -802,7 +884,14 @@
       </details>
 
       <details>
-        <summary>Intervalos</summary>
+        <summary>
+          <span class="summary-inner">
+            <svg class="ui-ico summary-ico" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 5h-2v6l5 3 1-1.7-4-2.3V7z"/>
+            </svg>
+            Intervalos
+          </span>
+        </summary>
 
         <fieldset>
           <legend>
@@ -850,7 +939,14 @@
       </details>
 
       <details>
-        <summary>Avançado</summary>
+        <summary>
+          <span class="summary-inner">
+            <svg class="ui-ico summary-ico" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M4 6h9v2H4V6zm0 5h16v2H4v-2zm0 5h11v2H4v-2zm12-11h4v4h-4V5zm4 10h-4v4h4v-4z"/>
+            </svg>
+            Avançado
+          </span>
+        </summary>
 
         <fieldset>
           <legend>
@@ -904,17 +1000,30 @@
     <div class="main col">
       <div class="tbar col">
         <div class="row">
-          <button id="toggleSidebar" class="btn-outline btn-icon" title="Mostrar/ocultar painel">☰</button>
+          <button id="toggleSidebar" class="btn-outline btn-icon" title="Mostrar/ocultar painel">
+            <svg class="ui-ico" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M4 5h16v3H4V5zm0 5h10v3H4v-3zm0 5h16v3H4v-3z"/>
+            </svg>
+          </button>
 
           <button id="start" class="btn-primary" style="min-width: 170px;" title="Iniciar exclusão">
+            <svg class="ui-ico" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M9 3h6v2H9V3zm-4 2h14v2H5V5zm2 4h10l-1 12H8L7 9zm4 2v8h2v-8h-2z"/>
+            </svg>
             Apagar
           </button>
 
           <button id="stop" class="btn-danger" title="Parar" disabled>
+            <svg class="ui-ico" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M7 7h10v10H7V7z"/>
+            </svg>
             Parar
           </button>
 
           <button id="clear" class="btn-outline" title="Limpar log">
+            <svg class="ui-ico" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M3 6h14v2H3V6zm0 5h14v2H3v-2zm0 5h10v2H3v-2zm13.5-1.5 2.5 2.5 2.5-2.5 1.5 1.5-2.5 2.5 2.5 2.5-1.5 1.5-2.5-2.5-2.5 2.5-1.5-1.5 2.5-2.5-2.5-2.5z"/>
+            </svg>
             Limpar log
           </button>
 
@@ -971,6 +1080,16 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
 
   var logFn;
   const setLogFn = (fn) => logFn = fn;
+
+  const LOG_ICONS = {
+    debug: '<svg class="log-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.7 7.3 4 12l4.7 4.7 1.4-1.4L6.8 12l3.3-3.3-1.4-1.4zm6.6 0-1.4 1.4L17.2 12l-3.3 3.3 1.4 1.4L20 12l-4.7-4.7z"/></svg>',
+    verb: '<svg class="log-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 5h-2v6l5 3 1-1.7-4-2.3V7z"/></svg>',
+    info: '<svg class="log-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 4.5a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5zM11 10h2v7h-2v-7z"/></svg>',
+    warn: '<svg class="log-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3l10 18H2L12 3zm-1 6v5h2V9h-2zm0 7v2h2v-2h-2z"/></svg>',
+    error: '<svg class="log-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 100 20 10 10 0 000-20zm3.5 6.5-1.4-1.4L12 9.1 9.9 7.1 8.5 8.5 10.6 10.6 8.5 12.7l1.4 1.4 2.1-2.1 2.1 2.1 1.4-1.4-2.1-2.1 2.1-2.1z"/></svg>',
+    success: '<svg class="log-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1 13-3-3 1.4-1.4 1.6 1.6 3.6-3.6 1.4 1.4-5 5z"/></svg>',
+  };
+  const getLogIcon = (type) => LOG_ICONS[type] || LOG_ICONS.info;
 
   // ======================= HELPERS =======================
   const normalizeToken = (t) => {
@@ -1681,15 +1800,15 @@ body.undiscord-pick-message [id^="message-content-"]:hover::after {
   background: linear-gradient(90deg, #ff3b3b, #ff6b6b);
   color: #fff;
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 600;
   text-transform: uppercase;
   text-align: center;
   border-radius: 10px;
-  content: 'ESTE 👉';
+  content: 'ESTE';
   border: 1px solid rgba(255,255,255,.18);
 }
-body.undiscord-pick-message.before [id^="message-content-"]:hover::after { content: 'ANTES 👆'; }
-body.undiscord-pick-message.after [id^="message-content-"]:hover::after { content: 'DEPOIS 👇'; }
+body.undiscord-pick-message.before [id^="message-content-"]:hover::after { content: 'ANTES'; }
+body.undiscord-pick-message.after [id^="message-content-"]:hover::after { content: 'DEPOIS'; }
 `;
 
   const messagePicker = {
@@ -2013,13 +2132,15 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
   }
 
   function printLog(type = '', args) {
+    const safeType = type || 'info';
+    const icon = getLogIcon(safeType);
     ui.logArea.insertAdjacentHTML(
       'beforeend',
-      `<div class="log log-${type}">${Array.from(args).map(o =>
+      `<div class="log log-${safeType}">${icon}<div class="log-text">${Array.from(args).map(o =>
         typeof o === 'object'
-          ? JSON.stringify(o, o instanceof Error && Object.getOwnPropertyNames(o))
-          : o
-      ).join('\t')}</div>`
+          ? escapeHTML(JSON.stringify(o, o instanceof Error && Object.getOwnPropertyNames(o)))
+          : escapeHTML(o)
+      ).join('\t')}</div></div>`
     );
     if (ui.autoScroll.checked) ui.logArea.querySelector('div:last-child').scrollIntoView(false);
     if (type === 'error') console.error(PREFIX, ...Array.from(args));

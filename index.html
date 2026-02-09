@@ -4,89 +4,112 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Diskill Message — Instalar no Tampermonkey</title>
-  <meta name="description" content="Apaga SOMENTE suas mensagens em um canal ou DM no Discord (exclusão em massa)." />
+  <meta name="description" content="Apaga somente suas mensagens em um canal ou DM no Discord (exclusão em massa)." />
 
   <!-- Open Graph (preview ao compartilhar) -->
   <meta property="og:title" content="Diskill Message — Tampermonkey" />
-  <meta property="og:description" content="Apaga SOMENTE suas mensagens em um canal ou DM no Discord (exclusão em massa)." />
+  <meta property="og:description" content="Apaga somente suas mensagens em um canal ou DM no Discord (exclusão em massa)." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://raw.githubusercontent.com/turkosx/Diskillrd-Message/main/images/lixeira.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <style>
+    @import url("https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap");
+
     :root{
-      --bg:#0b1220;
-      --card:#0f1b33;
-      --card2: rgba(255,255,255,.05);
-      --text:#eaf0ff;
-      --muted:#a9b6d3;
-      --border:rgba(255,255,255,.12);
-      --blue:#2f7bff;
-      --blue2:#0b5cff;
-      --shadow: 0 18px 45px rgba(0,0,0,.45);
-      --shadow2: 0 10px 28px rgba(0,0,0,.35);
-      --radius:18px;
+      --bg:#f6f7f9;
+      --card:#ffffff;
+      --card2:#f3f4f6;
+      --text:#111827;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --accent:#ff3b3b;
+      --accent2:#ff6b6b;
+      --shadow: 0 20px 50px rgba(15,23,42,.12);
+      --shadow2: 0 10px 26px rgba(15,23,42,.10);
+      --radius:20px;
       --radius2:14px;
-      --focus: 0 0 0 4px rgba(47,123,255,.28);
+      --focus: 0 0 0 4px rgba(255,59,59,.2);
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-family: "Sora", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
       background:
-        radial-gradient(1200px 800px at 20% 0%, #132a57 0%, transparent 55%),
-        radial-gradient(900px 600px at 100% 20%, #1a2b5b 0%, transparent 55%),
+        radial-gradient(900px 520px at 8% -8%, rgba(255,107,107,.18), transparent 60%),
+        radial-gradient(900px 600px at 95% 10%, rgba(255,210,210,.25), transparent 55%),
         var(--bg);
       color:var(--text);
     }
 
-    a{color:inherit}
-    .wrap{max-width:1040px;margin:0 auto;padding:54px 20px 64px}
+    a{color:inherit;text-decoration:none}
+    a:hover{text-decoration:underline}
+    b,strong{font-weight:500}
+
+    .wrap{max-width:1100px;margin:0 auto;padding:56px 20px 70px}
     .top{
       display:flex;gap:18px;align-items:center;flex-wrap:wrap;
-      margin-bottom:22px;
+      margin-bottom:26px;
     }
 
     .logo{
-      width:54px;height:54px;border-radius:16px;
-      background:linear-gradient(135deg,var(--blue),var(--blue2));
+      width:56px;height:56px;border-radius:18px;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
       display:grid;place-items:center;
       box-shadow:var(--shadow2);
       flex:0 0 auto;
-      border:1px solid rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.7);
     }
     .logo img{
       width:30px;height:30px;
-      filter:drop-shadow(0 6px 14px rgba(0,0,0,.35));
+      filter:drop-shadow(0 6px 16px rgba(15,23,42,.18));
     }
 
-    h1{margin:0;font-size:30px;letter-spacing:.2px}
-    .sub{margin:7px 0 0;color:var(--muted);line-height:1.55;max-width:760px}
+    h1{margin:0;font-size:32px;letter-spacing:.2px;font-weight:600}
+    .sub{
+      margin:8px 0 0;
+      color:var(--muted);
+      line-height:1.6;
+      max-width:780px;
+      font-weight:400;
+      overflow-wrap:anywhere;
+    }
+    .em{font-weight:500;color:var(--text)}
     .tag{
       display:inline-flex;gap:8px;align-items:center;
       border:1px solid var(--border);
       border-radius:999px;
       padding:7px 12px;
-      background:rgba(255,255,255,.05);
+      background:var(--card2);
       color:var(--muted);
       font-size:13px;
+      font-weight:500;
     }
 
-    .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}
+    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
     @media (max-width:940px){.grid{grid-template-columns:1fr}}
 
     .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      background: var(--card);
       border:1px solid var(--border);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
-      padding:22px;
+      padding:24px;
+      position:relative;
+      overflow:hidden;
+      animation: floatIn .5s ease both;
     }
+    .card:nth-child(2){animation-delay:.05s}
 
-    h2{margin:0 0 8px;font-size:18px}
-    .muted{color:var(--muted)}
+    h2{margin:0 0 10px;font-size:18px;font-weight:600}
+    .h-icon{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .muted{color:var(--muted);overflow-wrap:anywhere}
     .divider{height:1px;background:var(--border);margin:16px 0}
 
     .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
@@ -96,24 +119,25 @@
       gap:10px;
       padding:12px 16px;
       border-radius:12px;
-      font-weight:800;
+      font-weight:600;
       text-decoration:none;
       border:1px solid var(--border);
       color:var(--text);
-      background:rgba(255,255,255,.06);
+      background:#fff;
       transition: transform .12s ease, filter .12s ease, box-shadow .12s ease, background .12s ease;
       user-select:none;
       cursor:pointer;
     }
     .btn.primary{
-      background:linear-gradient(135deg,var(--blue),var(--blue2));
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
       border-color:transparent;
-      box-shadow: 0 10px 26px rgba(11,92,255,.28);
+      color:#fff;
+      box-shadow: 0 12px 30px rgba(255,59,59,.25);
     }
     .btn.ghost{
-      background:rgba(255,255,255,.04);
+      background:var(--card2);
     }
-    .btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .btn:hover{transform:translateY(-1px);filter:brightness(1.02)}
     .btn:active{transform:translateY(0px);filter:brightness(0.98)}
     .btn:focus{outline:none}
     .btn:focus-visible{box-shadow: var(--focus)}
@@ -124,10 +148,11 @@
       padding:8px 10px;
       border-radius:999px;
       border:1px solid var(--border);
-      background:rgba(255,255,255,.04);
+      background:var(--card2);
       color:var(--muted);
       font-size:13px;
       width:fit-content;
+      font-weight:500;
     }
 
     .codeRow{
@@ -141,52 +166,66 @@
       display:block;
       padding:12px 14px;
       border-radius:12px;
-      background:rgba(0,0,0,.25);
+      background:#f8fafc;
       border:1px solid var(--border);
-      color:#dbe7ff;
+      color:#0f172a;
       overflow:auto;
       flex: 1 1 520px;
+      font-weight:500;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:13px;
+      white-space:normal;
+      word-break:break-all;
+      overflow-wrap:anywhere;
     }
-    .k{color:#9bd1ff}
+    .k{color:#ef4444}
 
-    ol,ul{margin:10px 0 0 18px;color:var(--muted);line-height:1.65}
-    li{margin:6px 0}
+    ol,ul{margin:10px 0 0 18px;color:var(--muted);line-height:1.65;font-weight:400}
+    li{margin:6px 0;font-weight:400}
 
     .note{
-      border:1px solid var(--border);
-      background:var(--card2);
+      border:1px solid #fecdd3;
+      background:#fff1f2;
       border-radius:var(--radius2);
       padding:12px 14px;
-      color:var(--muted);
+      color:#7f1d1d;
       line-height:1.55;
       margin-top:12px;
+      font-weight:500;
+      overflow-wrap:anywhere;
     }
 
     .foot{
       margin-top:18px;
       color:var(--muted);
       font-size:13px;
-      line-height:1.55
+      line-height:1.55;
+      overflow-wrap:anywhere;
     }
     .mini{
-      font-size:12px;color:rgba(169,182,211,.85)
+      font-size:12px;color:rgba(107,114,128,.9)
     }
 
     .faq details{
       border:1px solid var(--border);
-      background:rgba(255,255,255,.04);
+      background:#fff;
       border-radius:var(--radius2);
       padding:12px 14px;
       margin-top:10px;
     }
     .faq summary{
       cursor:pointer;
-      font-weight:800;
+      font-weight:600;
       color:var(--text);
       list-style:none;
     }
     .faq summary::-webkit-details-marker{display:none}
-    .faq details p{margin:10px 0 0;color:var(--muted);line-height:1.6}
+    .faq details p{margin:10px 0 0;color:var(--muted);line-height:1.6;overflow-wrap:anywhere}
+
+    @keyframes floatIn{
+      from{opacity:0;transform:translateY(10px)}
+      to{opacity:1;transform:translateY(0)}
+    }
 
     /* Icons */
     .ico{
@@ -237,6 +276,21 @@
       <symbol id="i-copy" viewBox="0 0 24 24">
         <path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm4 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h12v16z"/>
       </symbol>
+
+      <!-- shield -->
+      <symbol id="i-shield" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M12 2 5 5v6c0 5.1 3.7 9.2 7 11 3.3-1.8 7-5.9 7-11V5l-7-3zm0 4.3 4 1.7v3.9c0 3.2-2 5.9-4 7.3-2-1.4-4-4.1-4-7.3V8l4-1.7z"/>
+      </symbol>
+
+      <!-- list -->
+      <symbol id="i-list" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M4 6h12v2H4V6zm0 5h12v2H4v-2zm0 5h8v2H4v-2zm14-9h2V5h-2v2zm0 5h2v-2h-2v2zm0 5h2v-2h-2v2z"/>
+      </symbol>
+
+      <!-- alert -->
+      <symbol id="i-alert" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M12 2 1 21h22L12 2zm-1 7v6h2V9h-2zm0 8v2h2v-2h-2z"/>
+      </symbol>
     </defs>
   </svg>
 
@@ -249,19 +303,25 @@
       <div>
         <h1>Diskill Message</h1>
         <div class="sub">
-          Apaga <b>SOMENTE suas mensagens</b> em um canal ou DM no Discord (exclusão em massa).
-          Interface “premium” + instalação simples via Tampermonkey.
+          Apaga <span class="em">somente suas mensagens</span> em um canal ou DM no Discord (exclusão em massa).
+          Interface refinada e instalação simples via Tampermonkey.
         </div>
       </div>
 
-      <div class="tag">Tampermonkey • Userscript</div>
+      <div class="tag">
+        <svg class="ico sm" aria-hidden="true"><use href="#i-shield"></use></svg>
+        Tampermonkey • Userscript
+      </div>
     </header>
 
     <section class="grid">
       <!-- Instalação -->
       <article class="card">
-        <h2>Instalação</h2>
-        <div class="muted">Clique no botão abaixo para instalar/atualizar no Tampermonkey.</div>
+        <h2 class="h-icon">
+          <svg class="ico" aria-hidden="true"><use href="#i-download"></use></svg>
+          Instalação
+        </h2>
+        <div class="muted">Clique no botão abaixo para instalar ou atualizar no Tampermonkey.</div>
 
         <div class="btns">
           <a class="btn primary" href="https://raw.githubusercontent.com/turkosx/Diskillrd-Message/main/diskill-message.user.js">
@@ -300,32 +360,38 @@
         </div>
 
         <div class="note">
-          <b>Dica:</b> se ao clicar em “Instalar” abrir apenas um texto na tela,
+          <span class="em">Dica:</span> se ao clicar em “Instalar” abrir apenas um texto na tela,
           confira se o Tampermonkey está ativo e se a instalação de scripts está permitida no navegador.
         </div>
 
         <div class="foot mini">
-          Alguma dúvida ? me adicione no discord: @tur.ko
+          Alguma dúvida? Me adicione no Discord: @tur.ko
         </div>
       </article>
 
       <!-- Como usar / Avisos -->
       <aside class="card">
-        <h2>Como usar</h2>
+        <h2 class="h-icon">
+          <svg class="ico" aria-hidden="true"><use href="#i-list"></use></svg>
+          Como usar
+        </h2>
         <ol>
-          <li>Abra o Discord no navegador e vá no canal/DM.</li>
-          <li>Clique no ícone (lixeira) e abra o painel do Diskill.</li>
-          <li>Preencha <b>Autor / Servidor / Canal</b> (ou use os botões “me/current”).</li>
-          <li>Clique em <b>Apagar</b> e acompanhe o log.</li>
+          <li>Abra o Discord no navegador e vá ao canal ou DM.</li>
+          <li>Clique no ícone de lixeira e abra o painel do Diskill.</li>
+          <li>Preencha <span class="em">Autor / Servidor / Canal</span> (ou use os botões “meu/atual”).</li>
+          <li>Clique em <span class="em">Apagar</span> e acompanhe o log.</li>
         </ol>
 
         <div class="divider"></div>
 
-        <h2>Notas importantes</h2>
+        <h2 class="h-icon">
+          <svg class="ico" aria-hidden="true"><use href="#i-alert"></use></svg>
+          Notas importantes
+        </h2>
         <ul>
           <li>Use com cuidado: exclusões são permanentes.</li>
-          <li>O script tenta apagar somente mensagens do seu usuário.</li>
-          <li>Se bater rate limit, aumente os delays.</li>
+          <li>O script tenta apagar apenas mensagens do seu usuário.</li>
+          <li>Se ocorrer rate limit, aumente os atrasos.</li>
         </ul>
 
         <div class="faq">
