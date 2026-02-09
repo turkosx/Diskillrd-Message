@@ -628,13 +628,16 @@
 }
 
 /* Streamer (redact) */
-#undiscord.redact .priv{ display:none !important; }
-#undiscord.redact x:not(:active){
+#undiscord.redact .priv{
   color: transparent !important;
   background-color: rgba(17,24,39,.08) !important;
   border-radius: 8px;
   cursor: default;
   user-select: none;
+}
+#undiscord.redact .priv::selection{
+  color: transparent !important;
+  background-color: rgba(17,24,39,.12) !important;
 }
 #undiscord.redact [priv]{ -webkit-text-security: disc !important; }
 `);
@@ -1047,16 +1050,7 @@
         <progress id="progressBar" style="display:none;"></progress>
       </div>
 
-      <pre id="logArea" class="logarea scroll">
-<div class="dmNotice">
-${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revise filtros e intervalos antes de iniciar.
-</div>
-
-<div class="dmCenter">
-  <div class="repo">Repo: <a href="${HOME}" target="_blank" rel="noopener noreferrer">Diskillrd-Message</a></div>
-  <div class="hint">Se ocorrer rate limit, aumente os atrasos no painel Avançado.</div>
-</div>
-      </pre>
+      <div id="logArea" class="logarea scroll"></div>
 
       <div class="footer row">
         <div id="progressPercent"></div>
@@ -1070,6 +1064,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
 
   // ======================= LOG =======================
   const log = {
+    msg() { return logFn ? logFn('msg', arguments) : console.log.apply(console, arguments); },
     debug() { return logFn ? logFn('debug', arguments) : console.debug.apply(console, arguments); },
     info() { return logFn ? logFn('info', arguments) : console.info.apply(console, arguments); },
     verb() { return logFn ? logFn('verb', arguments) : console.log.apply(console, arguments); },
@@ -1159,19 +1154,51 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
   const allowLogMarkup = html => {
     const escaped = escapeHTML(html);
     return escaped
-      .replace(/&lt;(\/?)(b|i|sup|sub|x)&gt;/gi, '<$1$2>')
-      .replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+      .replace(/&lt;br\s*\/?&gt;/gi, '<br>')
+      .replace(/&lt;(\/?)\s*(b|i|sup|sub)\s*&gt;/gi, '<$1$2>')
+      .replace(/&lt;span class=&quot;priv&quot;&gt;/gi, '<span class="priv">')
+      .replace(/&lt;\/span&gt;/gi, '</span>');
   };
-  const formatLogArg = (o) =>
-    typeof o === 'object'
-      ? escapeHTML(JSON.stringify(o, o instanceof Error && Object.getOwnPropertyNames(o)))
-      : allowLogMarkup(o);
-  const redact = str => `<x>${escapeHTML(str)}</x>`;
+  const isRedactMode = () => !!(ui.window && ui.window.classList.contains('redact'));
+  const formatLogArg = (o) => {
+    if (o instanceof Error) {
+      if (isRedactMode()) return redact('[erro]');
+      return escapeHTML(o.stack || o.message || String(o));
+    }
+    if (typeof o === 'object') {
+      if (isRedactMode()) return redact('[objeto]');
+      return escapeHTML(JSON.stringify(o, o instanceof Error && Object.getOwnPropertyNames(o)));
+    }
+    return allowLogMarkup(o);
+  };
+  const redact = str => `<span class="priv">${escapeHTML(str)}</span>`;
   const queryString = params => params.filter(p => p[1] !== undefined).map(p => p[0] + '=' + encodeURIComponent(p[1])).join('&');
   const ask = async msg => new Promise(resolve => setTimeout(() => resolve(window.confirm(msg)), 10));
   const toSnowflake = (date) => /:/.test(date) ? ((new Date(date).getTime() - 1420070400000) * Math.pow(2, 22)) : date;
   const replaceInterpolations = (str, obj, removeMissing = false) =>
     str.replace(/\{\{([\w_]+)\}\}/g, (m, key) => obj[key] || (removeMissing ? '' : m));
+
+  const pad2 = (n) => String(n ?? 0).padStart(2, '0');
+  const displayName = (msg) => {
+    const user = msg?.author;
+    if (!user) return 'Usuário';
+    const base = user.username || user.global_name || 'Usuário';
+    const discr = user.discriminator && user.discriminator !== '0' ? `#${user.discriminator}` : '';
+    return `${base}${discr}`;
+  };
+  const displayMessage = (msg) => {
+    if (!msg) return '[sem mensagem]';
+    if (msg.content && msg.content.trim()) return msg.content.replace(/\s+/g, ' ').trim();
+    if (msg.attachments && msg.attachments.length) return `[${msg.attachments.length} anexo(s)]`;
+    return '[sem texto]';
+  };
+  const formatLogLine = (msg, current, total) => {
+    const ts = msg?.timestamp ? new Date(msg.timestamp).toLocaleString() : '-';
+    if (isRedactMode()) {
+      return `[${pad2(current)}/${pad2(total)}] ${pad2(current)} - ${ts} - [oculto] - [oculto]`;
+    }
+    return `[${pad2(current)}/${pad2(total)}] ${pad2(current)} - ${ts} - ${displayName(msg)} - ${displayMessage(msg)}`;
+  };
 
   // ======================= DOM HELPERS =======================
   function createElm(html) {
@@ -1218,6 +1245,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
       grandTotal: 0,
       offset: 0,
       iterations: 0,
+      searchErrors: 0,
       _seachResponse: null,
       _messagesToDelete: [],
       _skippedMessages: [],
@@ -1244,6 +1272,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
         grandTotal: 0,
         offset: 0,
         iterations: 0,
+        searchErrors: 0,
         _seachResponse: null,
         _messagesToDelete: [],
         _skippedMessages: [],
@@ -1298,6 +1327,7 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
 
         log.verb('Buscando mensagens...');
         await this.search();
+        if (!this.state.running) break;
         await this.filterResponse();
 
         log.verb(
@@ -1362,79 +1392,88 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
       if (this.options.guildId === '@me') API_SEARCH_URL = `https://discord.com/api/v9/channels/${this.options.channelId}/messages/`;
       else API_SEARCH_URL = `https://discord.com/api/v9/guilds/${this.options.guildId}/messages/`;
 
-      let resp;
-      try {
-        this.beforeRequest();
-        resp = await fetch(API_SEARCH_URL + 'search?' + queryString([
-          // 🔒 sempre author_id (evita puxar msg de terceiros)
-          ['author_id', this.options.authorId || undefined],
-          ['channel_id', (this.options.guildId !== '@me' ? this.options.channelId : undefined) || undefined],
-          ['min_id', this.options.minId ? toSnowflake(this.options.minId) : undefined],
-          ['max_id', this.options.maxId ? toSnowflake(this.options.maxId) : undefined],
-          ['sort_by', 'timestamp'],
-          ['sort_order', 'desc'],
-          ['offset', this.state.offset],
-          ['has', this.options.hasLink ? 'link' : undefined],
-          ['has', this.options.hasFile ? 'file' : undefined],
-          ['content', this.options.content || undefined],
-          ['include_nsfw', this.options.includeNsfw ? true : undefined],
-        ]), {
-          headers: { 'Authorization': this.options.authToken }
-        });
-        this.afterRequest();
-      } catch (err) {
-        this.state.running = false;
-        log.error('A requisição de busca falhou:', err);
-        throw err;
-      }
+      while (this.state.running) {
+        let resp;
+        try {
+          this.beforeRequest();
+          resp = await fetch(API_SEARCH_URL + 'search?' + queryString([
+            // 🔒 sempre author_id (evita puxar msg de terceiros)
+            ['author_id', this.options.authorId || undefined],
+            ['channel_id', (this.options.guildId !== '@me' ? this.options.channelId : undefined) || undefined],
+            ['min_id', this.options.minId ? toSnowflake(this.options.minId) : undefined],
+            ['max_id', this.options.maxId ? toSnowflake(this.options.maxId) : undefined],
+            ['sort_by', 'timestamp'],
+            ['sort_order', 'desc'],
+            ['offset', this.state.offset],
+            ['has', this.options.hasLink ? 'link' : undefined],
+            ['has', this.options.hasFile ? 'file' : undefined],
+            ['content', this.options.content || undefined],
+            ['include_nsfw', this.options.includeNsfw ? true : undefined],
+          ]), {
+            headers: { 'Authorization': this.options.authToken }
+          });
+          this.afterRequest();
+        } catch (err) {
+          this.state.searchErrors++;
+          await wait(Math.min(30000, 1000 * this.state.searchErrors));
+          continue;
+        }
 
-      if (resp.status === 202) {
-        let w = (await resp.json()).retry_after * 1000;
-        w = w || this.stats.searchDelay;
-        this.stats.throttledCount++;
-        this.stats.throttledTotalTime += w;
-        log.warn(`Este canal ainda não foi indexado. Aguardando ${w}ms...`);
-        await wait(w);
-        return await this.search();
-      }
-
-      if (!resp.ok) {
-        if (resp.status === 429) {
+        if (resp.status === 202) {
           let w = (await resp.json()).retry_after * 1000;
           w = w || this.stats.searchDelay;
-
           this.stats.throttledCount++;
           this.stats.throttledTotalTime += w;
-          this.stats.searchDelay += w;
-          w = this.stats.searchDelay;
-
-          log.warn(`Rate limit na busca (${w}ms). Aumentando atraso da busca...`);
-          this.printStats();
-          log.verb(`Resfriando por ${w * 2}ms antes de tentar novamente...`);
-
-          await wait(w * 2);
-          return await this.search();
-        } else {
-          this.state.running = false;
-          log.error(`Erro ao buscar mensagens (HTTP ${resp.status})!\n`, await resp.json());
-          throw resp;
+          await wait(w);
+          continue;
         }
-      }
 
-      const data = await resp.json();
-      this.state._seachResponse = data;
-      return data;
+        if (!resp.ok) {
+          if (resp.status === 401 || resp.status === 403) {
+            this.state.running = false;
+            alert('Falha de autenticação. Verifique o token e tente novamente.');
+            return null;
+          }
+          if (resp.status === 429) {
+            let w = (await resp.json()).retry_after * 1000;
+            w = w || this.stats.searchDelay;
+
+            this.stats.throttledCount++;
+            this.stats.throttledTotalTime += w;
+            this.stats.searchDelay = (this.stats.searchDelay || 0) + w;
+            w = this.stats.searchDelay;
+
+            await wait(w * 2);
+            continue;
+          }
+          this.state.searchErrors++;
+          await wait(Math.min(30000, 1000 * this.state.searchErrors));
+          continue;
+        }
+
+        const data = await resp.json();
+        this.state.searchErrors = 0;
+        this.state._seachResponse = data;
+        return data;
+      }
+      return null;
     }
 
     async filterResponse() {
       const data = this.state._seachResponse;
+      if (!data || !Array.isArray(data.messages)) {
+        this.state._seachResponse = { messages: [], total_results: 0 };
+        this.state._messagesToDelete = [];
+        this.state._skippedMessages = [];
+        return;
+      }
 
       const total = data.total_results;
       if (total > this.state.grandTotal) this.state.grandTotal = total;
 
       const discoveredMessages = data.messages.map(convo => convo.find(message => message.hit === true));
 
-      let messagesToDelete = discoveredMessages;
+      let messagesToDelete = discoveredMessages.filter(Boolean);
 
       // Apenas tipos deletáveis
       messagesToDelete = messagesToDelete.filter(msg => msg.type === 0 || (msg.type >= 6 && msg.type <= 21));
@@ -1473,14 +1512,9 @@ ${BRAND_NAME}: este script apaga SOMENTE suas mensagens. Use com cuidado e revis
           continue;
         }
 
-        log.debug(
-          `[${this.state.delCount + 1}/${this.state.grandTotal}] ` +
-          `<sup>${new Date(message.timestamp).toLocaleString()}</sup> ` +
-          `<b>${redact(message.author.username + '#' + message.author.discriminator)}</b>` +
-          `: <i>${redact(message.content).replace(/\n/g, '↵')}</i>` +
-          (message.attachments.length ? redact(JSON.stringify(message.attachments)) : ''),
-          `<sup>{ID:${redact(message.id)}}</sup>`
-        );
+        const current = this.state.delCount + this.state.failCount + 1;
+        const total = Math.max(this.state.grandTotal, current);
+        log.msg(formatLogLine(message, current, total));
 
         let attempt = 0;
         while (attempt < this.options.maxAttempt) {
@@ -2080,7 +2114,10 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
 
     $('#redact').onchange = () => {
       const b = ui.window.classList.toggle('redact');
-      if (b) alert('Modo streamer ativado.\nConfira se não ficou nada sensível na tela.');
+      if (b) {
+        ui.logArea.innerHTML = '';
+        alert('Modo streamer ativado.\nO log foi limpo para evitar vazamentos.');
+      }
     };
 
     $('#pickMessageAfter').onclick = async () => {
@@ -2141,17 +2178,101 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
     setupCoreHooks();
   }
 
+  function safeArgToText(arg) {
+    if (typeof arg === 'string') return arg;
+    if (typeof arg === 'number' || typeof arg === 'boolean') return String(arg);
+    if (arg instanceof Error) return arg.message || 'Erro';
+    return '';
+  }
+
+  const statusBuffer = new Map();
+  const statusOrder = [
+    'search',
+    'total',
+    'etr',
+    'delay',
+    'rate_limit',
+    'rate_limited',
+    'indexing',
+  ];
+  const statusMatchers = [
+    { key: 'search', re: /^Buscando mensagens/i },
+    { key: 'total', re: /^Total geral:/i },
+    { key: 'etr', re: /^Tempo estimado restante:/i },
+    { key: 'delay', re: /^Atraso exclusão:/i },
+    { key: 'rate_limit', re: /^Rate limit/i },
+    { key: 'rate_limited', re: /^Rate limited:/i },
+    { key: 'indexing', re: /^Este canal ainda não foi indexado/i },
+  ];
+  const isAwaitLine = (text) => /^Aguardando /i.test(text);
+  const isImmediateLine = (text) => [
+    /^Iniciado em /i,
+    /^Encerrado em /i,
+    /^Apagadas /i,
+    /^Parado por você!/i,
+    /^Nada para apagar nesta página/i,
+    /^Finalizado: a API retornou página vazia/i,
+    /^Rodando lote com /i,
+    /^Iniciando tarefa\.\.\./i,
+    /^Tarefa finalizada\./i,
+    /^Lote finalizado\./i,
+  ].some((re) => re.test(text));
+
+  function getStatusKey(text) {
+    for (const { key, re } of statusMatchers) {
+      if (re.test(text)) return key;
+    }
+    return null;
+  }
+
+  function appendLogLine(text, type = 'info') {
+    const line = document.createElement('div');
+    const safeType = type === 'debug' ? 'info' : (type || 'info');
+    line.className = `log log-${safeType}`;
+    line.insertAdjacentHTML('beforeend', getLogIcon(safeType));
+    const textEl = document.createElement('div');
+    textEl.className = 'log-text';
+    textEl.textContent = text;
+    line.appendChild(textEl);
+    ui.logArea.appendChild(line);
+    if (ui.autoScroll.checked) line.scrollIntoView(false);
+  }
+
+  function flushStatusBuffer() {
+    for (const key of statusOrder) {
+      const item = statusBuffer.get(key);
+      if (item) appendLogLine(item.text, item.type);
+    }
+    statusBuffer.clear();
+  }
+
   function printLog(type = '', args) {
-    const safeType = type || 'info';
-    const icon = getLogIcon(safeType);
-    ui.logArea.insertAdjacentHTML(
-      'beforeend',
-      `<div class="log log-${safeType}">${icon}<div class="log-text">${Array.from(args)
-        .map(formatLogArg)
-        .join('\t')}</div></div>`
-    );
-    if (ui.autoScroll.checked) ui.logArea.querySelector('div:last-child').scrollIntoView(false);
-    if (type === 'error') console.error(PREFIX, ...Array.from(args));
+    const safeType = type === 'debug' ? 'info' : (type || 'info');
+    const raw = Array.from(args).map(safeArgToText).join(' ');
+    const cleaned = raw.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+    if (!cleaned) return;
+
+    if (type === 'msg') {
+      appendLogLine(cleaned, 'info');
+      return;
+    }
+
+    if (isImmediateLine(cleaned)) {
+      appendLogLine(cleaned, safeType);
+      return;
+    }
+
+    if (isAwaitLine(cleaned)) {
+      appendLogLine(cleaned, safeType);
+      flushStatusBuffer();
+      return;
+    }
+
+    const statusKey = getStatusKey(cleaned);
+    if (statusKey) {
+      statusBuffer.set(statusKey, { text: cleaned, type: safeType });
+      return;
+    }
   }
 
   function setupCoreHooks() {
