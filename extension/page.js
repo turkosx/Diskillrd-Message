@@ -1226,6 +1226,7 @@
       grandTotal: 0,
       offset: 0,
       iterations: 0,
+      searchErrors: 0,
       _seachResponse: null,
       _messagesToDelete: [],
       _skippedMessages: [],
@@ -1252,6 +1253,7 @@
         grandTotal: 0,
         offset: 0,
         iterations: 0,
+        searchErrors: 0,
         _seachResponse: null,
         _messagesToDelete: [],
         _skippedMessages: [],
@@ -1306,6 +1308,7 @@
 
         log.verb('Buscando mensagens...');
         await this.search();
+        if (!this.state.running) break;
         await this.filterResponse();
 
         log.verb(
@@ -1370,79 +1373,88 @@
       if (this.options.guildId === '@me') API_SEARCH_URL = `https://discord.com/api/v9/channels/${this.options.channelId}/messages/`;
       else API_SEARCH_URL = `https://discord.com/api/v9/guilds/${this.options.guildId}/messages/`;
 
-      let resp;
-      try {
-        this.beforeRequest();
-        resp = await fetch(API_SEARCH_URL + 'search?' + queryString([
-          // 🔒 sempre author_id (evita puxar msg de terceiros)
-          ['author_id', this.options.authorId || undefined],
-          ['channel_id', (this.options.guildId !== '@me' ? this.options.channelId : undefined) || undefined],
-          ['min_id', this.options.minId ? toSnowflake(this.options.minId) : undefined],
-          ['max_id', this.options.maxId ? toSnowflake(this.options.maxId) : undefined],
-          ['sort_by', 'timestamp'],
-          ['sort_order', 'desc'],
-          ['offset', this.state.offset],
-          ['has', this.options.hasLink ? 'link' : undefined],
-          ['has', this.options.hasFile ? 'file' : undefined],
-          ['content', this.options.content || undefined],
-          ['include_nsfw', this.options.includeNsfw ? true : undefined],
-        ]), {
-          headers: { 'Authorization': this.options.authToken }
-        });
-        this.afterRequest();
-      } catch (err) {
-        this.state.running = false;
-        log.error('A requisição de busca falhou:', err);
-        throw err;
-      }
+      while (this.state.running) {
+        let resp;
+        try {
+          this.beforeRequest();
+          resp = await fetch(API_SEARCH_URL + 'search?' + queryString([
+            // 🔒 sempre author_id (evita puxar msg de terceiros)
+            ['author_id', this.options.authorId || undefined],
+            ['channel_id', (this.options.guildId !== '@me' ? this.options.channelId : undefined) || undefined],
+            ['min_id', this.options.minId ? toSnowflake(this.options.minId) : undefined],
+            ['max_id', this.options.maxId ? toSnowflake(this.options.maxId) : undefined],
+            ['sort_by', 'timestamp'],
+            ['sort_order', 'desc'],
+            ['offset', this.state.offset],
+            ['has', this.options.hasLink ? 'link' : undefined],
+            ['has', this.options.hasFile ? 'file' : undefined],
+            ['content', this.options.content || undefined],
+            ['include_nsfw', this.options.includeNsfw ? true : undefined],
+          ]), {
+            headers: { 'Authorization': this.options.authToken }
+          });
+          this.afterRequest();
+        } catch (err) {
+          this.state.searchErrors++;
+          await wait(Math.min(30000, 1000 * this.state.searchErrors));
+          continue;
+        }
 
-      if (resp.status === 202) {
-        let w = (await resp.json()).retry_after * 1000;
-        w = w || this.stats.searchDelay;
-        this.stats.throttledCount++;
-        this.stats.throttledTotalTime += w;
-        log.warn(`Este canal ainda não foi indexado. Aguardando ${w}ms...`);
-        await wait(w);
-        return await this.search();
-      }
-
-      if (!resp.ok) {
-        if (resp.status === 429) {
+        if (resp.status === 202) {
           let w = (await resp.json()).retry_after * 1000;
           w = w || this.stats.searchDelay;
-
           this.stats.throttledCount++;
           this.stats.throttledTotalTime += w;
-          this.stats.searchDelay += w;
-          w = this.stats.searchDelay;
-
-          log.warn(`Rate limit na busca (${w}ms). Aumentando atraso da busca...`);
-          this.printStats();
-          log.verb(`Resfriando por ${w * 2}ms antes de tentar novamente...`);
-
-          await wait(w * 2);
-          return await this.search();
-        } else {
-          this.state.running = false;
-          log.error(`Erro ao buscar mensagens (HTTP ${resp.status})!\n`, await resp.json());
-          throw resp;
+          await wait(w);
+          continue;
         }
-      }
 
-      const data = await resp.json();
-      this.state._seachResponse = data;
-      return data;
+        if (!resp.ok) {
+          if (resp.status === 401 || resp.status === 403) {
+            this.state.running = false;
+            alert('Falha de autenticação. Verifique o token e tente novamente.');
+            return null;
+          }
+          if (resp.status === 429) {
+            let w = (await resp.json()).retry_after * 1000;
+            w = w || this.stats.searchDelay;
+
+            this.stats.throttledCount++;
+            this.stats.throttledTotalTime += w;
+            this.stats.searchDelay = (this.stats.searchDelay || 0) + w;
+            w = this.stats.searchDelay;
+
+            await wait(w * 2);
+            continue;
+          }
+          this.state.searchErrors++;
+          await wait(Math.min(30000, 1000 * this.state.searchErrors));
+          continue;
+        }
+
+        const data = await resp.json();
+        this.state.searchErrors = 0;
+        this.state._seachResponse = data;
+        return data;
+      }
+      return null;
     }
 
     async filterResponse() {
       const data = this.state._seachResponse;
+      if (!data || !Array.isArray(data.messages)) {
+        this.state._seachResponse = { messages: [], total_results: 0 };
+        this.state._messagesToDelete = [];
+        this.state._skippedMessages = [];
+        return;
+      }
 
       const total = data.total_results;
       if (total > this.state.grandTotal) this.state.grandTotal = total;
 
       const discoveredMessages = data.messages.map(convo => convo.find(message => message.hit === true));
 
-      let messagesToDelete = discoveredMessages;
+      let messagesToDelete = discoveredMessages.filter(Boolean);
 
       // Apenas tipos deletáveis
       messagesToDelete = messagesToDelete.filter(msg => msg.type === 0 || (msg.type >= 6 && msg.type <= 21));
@@ -2166,21 +2178,63 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
     setupCoreHooks();
   }
 
+  function isSafeStatusLine(text) {
+    return [
+      /^Iniciado em /i,
+      /^Encerrado em /i,
+      /^Buscando mensagens/i,
+      /^Total geral:/i,
+      /^Aguardando /i,
+      /^Tempo estimado restante:/i,
+      /^Atraso exclusão:/i,
+      /^Rate limited:/i,
+      /^Rate limit/i,
+      /^Apagadas /i,
+      /^Parado por você!/i,
+      /^Nada para apagar nesta página/i,
+      /^Finalizado: a API retornou página vazia/i,
+      /^Rodando lote com /i,
+      /^Iniciando tarefa\.\.\./i,
+      /^Tarefa finalizada\./i,
+      /^Lote finalizado\./i,
+      /^Este canal ainda não foi indexado/i,
+    ].some((re) => re.test(text));
+  }
+
+  function safeArgToText(arg) {
+    if (typeof arg === 'string') return arg;
+    if (typeof arg === 'number' || typeof arg === 'boolean') return String(arg);
+    if (arg instanceof Error) return arg.message || 'Erro';
+    return '';
+  }
+
   function printLog(type = '', args) {
-    if (type !== 'msg') return;
+    const safeType = type === 'debug' ? 'info' : (type || 'info');
+    const raw = Array.from(args).map(safeArgToText).join(' ');
+    const cleaned = raw.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+    if (!cleaned) return;
+
+    if (type === 'msg') {
+      const line = document.createElement('div');
+      line.className = 'log log-info';
+      line.insertAdjacentHTML('beforeend', getLogIcon('info'));
+      const text = document.createElement('div');
+      text.className = 'log-text';
+      text.textContent = cleaned;
+      line.appendChild(text);
+      ui.logArea.appendChild(line);
+      if (ui.autoScroll.checked) line.scrollIntoView(false);
+      return;
+    }
+
+    if (!isSafeStatusLine(cleaned)) return;
 
     const line = document.createElement('div');
-    line.className = 'log log-info';
-
-    const icon = document.createElement('span');
-    icon.className = 'log-ico';
-    icon.setAttribute('aria-hidden', 'true');
-
+    line.className = `log log-${safeType}`;
+    line.insertAdjacentHTML('beforeend', getLogIcon(safeType));
     const text = document.createElement('div');
     text.className = 'log-text';
-    text.textContent = Array.from(args).map(String).join(' ');
-
-    line.appendChild(icon);
+    text.textContent = cleaned;
     line.appendChild(text);
     ui.logArea.appendChild(line);
     if (ui.autoScroll.checked) line.scrollIntoView(false);
