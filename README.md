@@ -5,6 +5,8 @@ Apaga **SOMENTE suas mensagens** em um canal ou DM no Discord (exclusão em mass
 > ⚠️ Use com cuidado: exclusões são permanentes.
 
 ---
+## ✅ TUTORIAL VIDEO
+- Link: https://www.youtube.com/watch?v=O8EQvi84kx0
 
 ## ✅ Instalação (1 clique)
 
