@@ -8,18 +8,16 @@
   const BRAND_NAME = "Diskill Message";
   const PREFIX = '[DISKILL MESSAGE]';
 
-  // links
+  // Links - Duvidas ? Discord: @tur.ko //
   const HOME = 'https://github.com/turkosx/Diskillrd-Message';
-  const DOCS = HOME + '#'; // você pode criar âncoras no README depois (ex: #como-usar)
+  const DOCS = HOME + '#'; // Ancora de docs - Duvidas ? Discord: @tur.ko //
 
-  // ===================== UI (INSPIRADA NO MODELO) =====================
-  // Mudanças aqui: apenas CSS/HTML (IDs mantidos)
+  // UI (modelo base) - Duvidas ? Discord: @tur.ko //
+  // CSS/HTML apenas (IDs mantidos) - Duvidas ? Discord: @tur.ko //
   var themeCss = (`
-/* ==========================================================
-   Diskill Message UI — Light / Red (polido)
-   ========================================================== */
+/* Diskill Message UI (light/red) - Duvidas ? Discord: @tur.ko // */
 #undiscord{
-  /* Tokens (clean + vermelho) */
+  /* Tokens (clean + vermelho) - Duvidas ? Discord: @tur.ko // */
   --dm-bg: #f6f7f9;
   --dm-surface: #ffffff;
   --dm-card: #ffffff;
@@ -59,7 +57,7 @@
   border: 1px solid var(--dm-border);
 }
 
-/* Reset/Box */
+/* Reset/Box - Duvidas ? Discord: @tur.ko // */
 #undiscord, #undiscord * { box-sizing: border-box; }
 #undiscord { 
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -68,14 +66,14 @@
   font-weight: 500;
 }
 
-/* Window container */
+/* Window container - Duvidas ? Discord: @tur.ko // */
 #undiscord.browser{
   box-shadow: var(--dm-shadow);
   border-radius: var(--dm-radius);
   overflow: hidden;
 }
 
-/* Header */
+/* Header - Duvidas ? Discord: @tur.ko // */
 #undiscord .header{
   height: 56px;
   min-height: 56px;
@@ -110,7 +108,7 @@
   font-weight: 600;
   letter-spacing: .15px;
 
-  /* título com gradiente (como o modelo) */
+  /* Titulo com gradiente - Duvidas ? Discord: @tur.ko // */
   background: linear-gradient(90deg, var(--dm-primary-from), var(--dm-primary-to));
   -webkit-background-clip: text;
   background-clip: text;
@@ -156,7 +154,7 @@
 }
 #undiscord .header .iconBtn:active{ transform: translateY(1px); }
 
-/* Layout */
+/* Layout - Duvidas ? Discord: @tur.ko // */
 #undiscord .window-body{ height: calc(100% - 56px); display: flex; }
 
 #undiscord .sidebar{
@@ -178,7 +176,7 @@
 #undiscord.hide-sidebar .sidebar{ display:none; }
 #undiscord.hide-sidebar .main{ max-width: 100%; }
 
-/* Sections (cards) */
+/* Sections (cards) - Duvidas ? Discord: @tur.ko // */
 #undiscord details{
   border: 1px solid var(--dm-border);
   background: var(--dm-surface);
@@ -257,7 +255,7 @@
   overflow-wrap: anywhere;
 }
 
-/* Inputs */
+/* Inputs - Duvidas ? Discord: @tur.ko // */
 #undiscord .input-wrapper{ width: 100%; }
 #undiscord input[type="text"],
 #undiscord input[type="search"],
@@ -288,7 +286,7 @@
   background: #fff !important;
 }
 
-/* Toggles */
+/* Toggles - Duvidas ? Discord: @tur.ko // */
 #undiscord .toggle{
   position: relative;
   display: inline-flex;
@@ -352,7 +350,7 @@
   transform: translateX(18px);
 }
 
-/* Multi input row */
+/* Multi input row - Duvidas ? Discord: @tur.ko // */
 #undiscord .multiInput{
   display: flex;
   gap: 8px;
@@ -375,7 +373,7 @@
   background: var(--dm-card-2);
 }
 
-/* Range */
+/* Range - Duvidas ? Discord: @tur.ko // */
 #undiscord input[type="range"]{
   width: 100%;
   accent-color: var(--dm-primary);
@@ -387,7 +385,7 @@
   font-weight: 500;
 }
 
-/* Links */
+/* Links - Duvidas ? Discord: @tur.ko // */
 #undiscord a{
   color: var(--dm-primary);
   text-decoration: none;
@@ -395,7 +393,7 @@
 }
 #undiscord a:hover{ text-decoration: underline; }
 
-/* Icons */
+/* Icons - Duvidas ? Discord: @tur.ko // */
 #undiscord .ui-ico{
   width: 16px;
   height: 16px;
@@ -416,7 +414,7 @@
   height: 18px;
 }
 
-/* Buttons */
+/* Buttons - Duvidas ? Discord: @tur.ko // */
 #undiscord button{
   height: 40px;
   border-radius: 12px;
@@ -473,7 +471,7 @@
   pointer-events: none;
 }
 
-/* Toolbar */
+/* Toolbar - Duvidas ? Discord: @tur.ko // */
 #undiscord .tbar{
   padding: 12px;
   border-bottom: 1px solid var(--dm-border-2);
@@ -490,7 +488,7 @@
 }
 #undiscord .tbar progress{ width: 100%; height: 10px; margin-top: 10px; }
 
-/* progress styling (webkit) */
+/* Progress styling (webkit) - Duvidas ? Discord: @tur.ko // */
 #undiscord progress{
   appearance: none;
   border: none;
@@ -503,7 +501,7 @@
   background: linear-gradient(90deg, var(--dm-primary-from), var(--dm-primary-to)); 
 }
 
-/* Log area */
+/* Log area - Duvidas ? Discord: @tur.ko // */
 #undiscord #logArea{
   margin: 12px;
   border-radius: 16px;
@@ -557,7 +555,7 @@
 #undiscord .log-error{ color: #991b1b; background: #fef2f2; border-color: #fecaca; }
 #undiscord .log-success{ color: #166534; background: #f0fdf4; border-color: #bbf7d0; }
 
-/* Notice inside log */
+/* Notice inside log - Duvidas ? Discord: @tur.ko // */
 #undiscord .dmNotice{
   padding: 12px;
   border: 1px solid #fecdd3;
@@ -579,7 +577,7 @@
   color: var(--dm-muted);
 }
 
-/* Footer */
+/* Footer - Duvidas ? Discord: @tur.ko // */
 #undiscord .footer{
   padding: 10px 12px;
   border-top: 1px solid var(--dm-border-2);
@@ -594,7 +592,7 @@
   font-weight: 500;
 }
 
-/* Resize handle */
+/* Resize handle - Duvidas ? Discord: @tur.ko // */
 .resize-handle{
   position: absolute;
   bottom: -14px;
@@ -608,7 +606,7 @@
   border: 1px solid rgba(17,24,39,.12);
 }
 
-/* Streamer (redact) */
+/* Streamer (redact) - Duvidas ? Discord: @tur.ko // */
 #undiscord.redact .priv{
   color: transparent !important;
   background-color: rgba(17,24,39,.08) !important;
@@ -623,7 +621,7 @@
 #undiscord.redact [priv]{ -webkit-text-security: disc !important; }
 `);
 
-  // Botão de toolbar (no Discord)
+  // Botao da toolbar no Discord - Duvidas ? Discord: @tur.ko //
   var mainCss = (`
 #undicord-btn {
   position: relative;
@@ -648,7 +646,7 @@
 #undicord-btn.running { color: #ef4444 !important; background: rgba(255,59,59,.18); }
 #undicord-btn.running progress { display: block; }
 
-/* Container window positioning */
+/* Container window positioning - Duvidas ? Discord: @tur.ko // */
 #undiscord{
   position: fixed;
   z-index: 9999;
@@ -678,7 +676,7 @@
 [name="grab-bl"] { bottom: 0px; left: 0px; width: var(--corner-size); height: var(--corner-size); margin-bottom: var(--offset); margin-left: var(--offset); cursor: nesw-resize; }
 `);
 
-  // Ícone do botão no Discord (lixeira estilizada)
+  // Icone do botao no Discord - Duvidas ? Discord: @tur.ko //
   var buttonHtml = (`
 <div id="undicord-btn" tabindex="0" role="button" aria-label="Diskill Message" title="Diskill Message • Apagar suas mensagens">
   <svg aria-hidden="false" width="22" height="22" viewBox="0 0 24 24">
@@ -689,7 +687,7 @@
 </div>
 `);
 
-  // Template da janela — IDs essenciais mantidos
+  // Template da janela (IDs essenciais) - Duvidas ? Discord: @tur.ko //
   var undiscordTemplate = (`
 <div id="undiscord" class="browser container redact" style="display:none;">
   <div class="header">
@@ -1043,7 +1041,7 @@
 </div>
 `);
 
-  // ======================= LOG =======================
+  // Log - Duvidas ? Discord: @tur.ko //
   const log = {
     msg() { return logFn ? logFn('msg', arguments) : console.log.apply(console, arguments); },
     debug() { return logFn ? logFn('debug', arguments) : console.debug.apply(console, arguments); },
@@ -1067,7 +1065,7 @@
   };
   const getLogIcon = (type) => LOG_ICONS[type] || LOG_ICONS.info;
 
-  // ======================= HELPERS =======================
+  // Helpers - Duvidas ? Discord: @tur.ko //
   const normalizeToken = (t) => {
     if (!t) return '';
     if (typeof t === 'object') t = t.token || '';
@@ -1181,7 +1179,7 @@
     return `[${pad2(current)}/${pad2(total)}] ${pad2(current)} - ${ts} - ${displayName(msg)} - ${displayMessage(msg)}`;
   };
 
-  // ======================= DOM HELPERS =======================
+  // DOM helpers - Duvidas ? Discord: @tur.ko //
   function createElm(html) {
     const temp = document.createElement('div');
     temp.innerHTML = html;
@@ -1195,9 +1193,7 @@
     return style;
   }
 
-  /**
-   * Core: apagar mensagens do Discord (somente do authorId)
-   */
+  // Core: apagar mensagens do Discord (somente do authorId) - Duvidas ? Discord: @tur.ko //
   class DiskillCore {
 
     options = {
@@ -1324,7 +1320,7 @@
         log.verb(`Tempo estimado restante: ${msToHMS(this.stats.etr)}`);
 
         if (this.state._messagesToDelete.length > 0) {
-          // confirmação desativada: segue direto pro delete
+          // Confirmacao desativada, segue para delete - Duvidas ? Discord: @tur.ko //
           await this.deleteMessagesFromList();
         } else if (this.state._skippedMessages.length > 0) {
           const oldOffset = this.state.offset;
@@ -1350,7 +1346,7 @@
 
       if (this.onStop) this.onStop(this.state, this.stats);
     }
-// ======= PARTE 2/3 =======
+// Parte 2/3 - Duvidas ? Discord: @tur.ko //
     stop() {
       this.state.running = false;
       if (this.onStop) this.onStop(this.state, this.stats);
@@ -1363,7 +1359,7 @@
     }
 
     async confirm() {
-      // Confirmação/preview desativados: não abre mais window.confirm
+      // Sem confirmacao/preview (sem window.confirm) - Duvidas ? Discord: @tur.ko //
       this.options.askForConfirmation = false;
       return true;
     }
@@ -1378,7 +1374,7 @@
         try {
           this.beforeRequest();
           resp = await fetch(API_SEARCH_URL + 'search?' + queryString([
-            // 🔒 sempre author_id (evita puxar msg de terceiros)
+            // Sempre author_id - Duvidas ? Discord: @tur.ko //
             ['author_id', this.options.authorId || undefined],
             ['channel_id', (this.options.guildId !== '@me' ? this.options.channelId : undefined) || undefined],
             ['min_id', this.options.minId ? toSnowflake(this.options.minId) : undefined],
@@ -1456,23 +1452,23 @@
 
       let messagesToDelete = discoveredMessages.filter(Boolean);
 
-      // Apenas tipos deletáveis
+      // Apenas tipos deletaveis - Duvidas ? Discord: @tur.ko //
       messagesToDelete = messagesToDelete.filter(msg => msg.type === 0 || (msg.type >= 6 && msg.type <= 21));
       messagesToDelete = messagesToDelete.filter(msg => msg.pinned ? this.options.includePinned : true);
 
-      // ✅ FAILSAFE: nunca tenta apagar msg que não é sua
+      // Failsafe: so apaga mensagens do autor - Duvidas ? Discord: @tur.ko //
       if (this.options.authorId) {
         messagesToDelete = messagesToDelete.filter(msg => msg?.author?.id === this.options.authorId);
       } else {
         messagesToDelete = [];
       }
 
-      // Regex opcional
+      // Regex opcional - Duvidas ? Discord: @tur.ko //
       try {
         const regex = new RegExp(this.options.pattern, 'i');
         messagesToDelete = messagesToDelete.filter(msg => regex.test(msg.content));
       } catch (e) {
-        // pattern vazio ou inválido = ignora
+        // Ignora pattern vazio ou invalido - Duvidas ? Discord: @tur.ko //
       }
 
       const skippedMessages = discoveredMessages.filter(msg => !messagesToDelete.find(m => m.id === msg.id));
@@ -1486,7 +1482,7 @@
         const message = this.state._messagesToDelete[i];
         if (!this.state.running) return log.error('Parado por você!');
 
-        // failsafe extra
+        // Failsafe extra - Duvidas ? Discord: @tur.ko //
         if (this.options.authorId && message?.author?.id !== this.options.authorId) {
           log.warn('Pulando mensagem (não é sua).');
           this.state.offset++;
@@ -1545,7 +1541,7 @@
           return 'RETRY';
         }
 
-        // ✅ evita travar: se não pode apagar (404/403), pula
+        // Pula 404/403 - Duvidas ? Discord: @tur.ko //
         if (resp.status === 404 || resp.status === 403) {
           log.warn(`Não foi possível apagar (HTTP ${resp.status}). Pulando esta mensagem.`);
           this.state.offset++;
@@ -1599,7 +1595,7 @@
     }
   }
 
-  // ======================= DRAG + RESIZE =======================
+  // Drag + resize - Duvidas ? Discord: @tur.ko //
   const MOVE = 0;
   const RESIZE_T = 1;
   const RESIZE_B = 2;
@@ -1654,7 +1650,7 @@
       }
     }
   }
-// ======= PARTE 3/3 =======
+// Parte 3/3 - Duvidas ? Discord: @tur.ko //
   class Draggable {
     constructor(targetElm, handleElm, op, options) {
       Object.assign(this, options);
@@ -1802,8 +1798,8 @@
     return defaults;
   }
 
-  // ======================= MESSAGE PICKER =======================
-  // (UI ajustada pro mesmo tema, sem alterar a lógica)
+  // Message picker - Duvidas ? Discord: @tur.ko //
+  // UI no mesmo tema - Duvidas ? Discord: @tur.ko //
   const messagePickerCss = `
 body.undiscord-pick-message [data-list-id="chat-messages"] {
   background-color: rgba(255,59,59,.06) !important;
@@ -1964,16 +1960,16 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
       toggleWindow();
     }
 
-    // Anti-autofill
+    // Anti-autofill - Duvidas ? Discord: @tur.ko //
     hardenInputsAgainstAutofill(ui.window);
 
     new DragResize({ elm: ui.window, moveHandle: $('.header') });
 
-    // Botão no Discord
+    // Botao no Discord - Duvidas ? Discord: @tur.ko //
     ui.btn = createElm(buttonHtml);
     ui.btn.addEventListener('click', toggleWindow);
 
-    // Host fallback
+    // Host fallback - Duvidas ? Discord: @tur.ko //
     const FALLBACK_HOST_ID = 'diskill-fallback-host';
 
     function isVisible(el) {
@@ -2026,7 +2022,7 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
         if (best) return best;
       }
 
-      // fallback: mais alto e à direita
+      // Fallback: mais alto e a direita - Duvidas ? Discord: @tur.ko //
       let best = null;
       let bestScore = -Infinity;
       for (const el of toolbars) {
@@ -2095,7 +2091,7 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
     ui.progressIcon = ui.btn.querySelector('progress');
     ui.percent = $('#progressPercent');
 
-    // Handlers
+    // Handlers - Duvidas ? Discord: @tur.ko //
     $('#hide').onclick = toggleWindow;
     $('#toggleSidebar').onclick = () => ui.window.classList.toggle('hide-sidebar');
     $('button#start').onclick = startAction;
@@ -2173,7 +2169,7 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
       }
     };
 
-    // log renderer
+    // Log renderer - Duvidas ? Discord: @tur.ko //
     setLogFn(printLog);
     setupCoreHooks();
   }
@@ -2307,7 +2303,7 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
         ui.percent.innerHTML = '...';
       }
 
-      // refletir sliders
+      // Refletir sliders - Duvidas ? Discord: @tur.ko //
       const sd = $('input#searchDelay');
       sd.value = diskillCore.options.searchDelay;
       $('div#searchDelayValue').textContent = diskillCore.options.searchDelay + 'ms';
@@ -2330,7 +2326,7 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
   async function startAction() {
     console.log(PREFIX, 'startAction');
 
-    // 🔒 Força authorId = seu usuário se estiver vazio (evita 404 por msg de terceiros)
+    // Forca authorId quando vazio - Duvidas ? Discord: @tur.ko //
     let authorId = $('input#authorId').value.trim();
     if (!authorId) {
       authorId = String(getAuthorId()).trim();
@@ -2357,7 +2353,7 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
     const searchDelay = parseInt($('input#searchDelay').value.trim());
     const deleteDelay = parseInt($('input#deleteDelay').value.trim());
 
-    // Token
+    // Token - Duvidas ? Discord: @tur.ko //
     let authToken = normalizeToken($('input#token').value);
 
     if (!looksLikeDiscordToken(authToken)) {
@@ -2431,7 +2427,7 @@ body.undiscord-pick-message.after [id^="message-content-"]:hover::after { conten
     diskillCore.stop();
   }
 
-  // START
+  // Start - Duvidas ? Discord: @tur.ko //
   initUI();
 
 })();
